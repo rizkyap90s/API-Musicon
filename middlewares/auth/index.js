@@ -3,7 +3,7 @@ const LocalStrategy = require("passport-local").Strategy; // Login but not using
 const bcrypt = require("bcrypt"); // to compare the password
 const JWTstrategy = require("passport-jwt").Strategy; // to enable jwt in passport
 const ExtractJWT = require("passport-jwt").ExtractJwt; // to extract or read jwt
-const { user } = require("../../models"); // Import user
+const { User } = require("../../models"); // Import user
 
 // Logic to register
 exports.register = (req, res, next) => {
@@ -32,7 +32,7 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        const data = await user.create(req.body);
+        const data = await User.create(req.body);
 
         return done(null, data, { message: "User can be created" });
       } catch (e) {
@@ -69,7 +69,7 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        const data = await user.findOne({ email });
+        const data = await User.findOne({ email });
 
         if (!data) {
           return done(null, false, { message: "User is not found!" });
@@ -116,7 +116,7 @@ passport.use(
     },
     async (token, done) => {
       try {
-        const data = await user.findOne({ _id: token.user });
+        const data = await User.findOne({ _id: token.user });
 
         if (data.role === "admin") {
           return done(null, token);
@@ -156,7 +156,7 @@ passport.use(
     },
     async (token, done) => {
       try {
-        const data = await user.findOne({ _id: token.user });
+        const data = await User.findOne({ _id: token.user });
 
         if (data.role === "user") {
           return done(null, token);
@@ -196,7 +196,7 @@ passport.use(
     },
     async (token, done) => {
       try {
-        const data = await user.findOne({ _id: token.user });
+        const data = await User.findOne({ _id: token.user });
 
         if (data.role === "admin" || data.role === "user") {
           return done(null, token);
@@ -211,27 +211,23 @@ passport.use(
 );
 
 exports.adminOrSameUser = (req, res, next) => {
-  passport.authorize(
-    "adminOrSameUser",
-    { session: false },
-    (err, user, info) => {
-      if (err) {
-        return next({ message: err.message, statusCode: 403 });
-      }
-
-      if (!user) {
-        return next({ message: info.message, statusCode: 403 });
-      }
-
-      if (info.message == "user" && user.user !== req.params.id) {
-        return next({ message: "Forbidden access", statusCode: 403 });
-      }
-
-      req.user = user;
-
-      next();
+  passport.authorize("adminOrSameUser", { session: false }, (err, user, info) => {
+    if (err) {
+      return next({ message: err.message, statusCode: 403 });
     }
-  )(req, res, next);
+
+    if (!user) {
+      return next({ message: info.message, statusCode: 403 });
+    }
+
+    if (info.message == "user" && user.user !== req.params.id) {
+      return next({ message: "Forbidden access", statusCode: 403 });
+    }
+
+    req.user = user;
+
+    next();
+  })(req, res, next);
 };
 
 passport.use(
@@ -243,7 +239,7 @@ passport.use(
     },
     async (token, done) => {
       try {
-        const data = await user.findOne({ _id: token.user });
+        const data = await User.findOne({ _id: token.user });
 
         if (data.role === "admin") {
           return done(null, token, { message: "admin" });
