@@ -1,4 +1,3 @@
-// Adib's Code
 // Rezki's Code
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
