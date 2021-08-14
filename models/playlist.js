@@ -22,7 +22,7 @@ const playlistSchema = new mongoose.Schema(
     },
     playlistDuration: {
       type: String,
-      required: true,
+      required: false,
       default: "6969",
     },
     playlistImage: {
