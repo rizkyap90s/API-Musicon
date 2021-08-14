@@ -4,6 +4,7 @@
   "description": "Musicon",
   "main": "app.js",
   "scripts": {
+    "seed": "NODE_ENV=development node seeders",
     "dev": "NODE_ENV=development npx nodemon app",
     "test": "NODE_ENV=test jest --testTimeout=30000 --coverage --forceExit",
     "stop": "killall node",

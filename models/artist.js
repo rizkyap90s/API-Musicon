@@ -13,7 +13,7 @@ const artistSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         require: false,
-        ref: "album",
+        ref: "Album",
       },
     ],
     photo: {

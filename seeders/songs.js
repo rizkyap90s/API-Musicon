@@ -1,12 +1,11 @@
 const axios = require("axios");
-let dumps = require("./utils/dumps.json");
 const { token } = require("./utils/token"); // token expires in ~1 hour
 const { Album, Song } = require("../models");
 const mongoose = require("mongoose");
 
 const API_PARTIAL = "https://api.spotify.com/v1";
 
-const fetchSongs = async function () {
+exports.fetchSongs = async function () {
   try {
     await Song.deleteMany(); // delete all previous entries
     let albums = await Album.find();
@@ -47,5 +46,3 @@ const fetchSongs = async function () {
     return console.error(error);
   }
 };
-
-fetchSongs();

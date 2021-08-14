@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 const API_PARTIAL = "https://api.spotify.com/v1";
 
-const fetchAlbums = async function () {
+exports.fetchAlbums = async function () {
   try {
     await Album.deleteMany(); // delete all previous entries
     for (artist in dumps.artists) {
@@ -34,16 +34,13 @@ const fetchAlbums = async function () {
         }).select("_id");
 
         sanitizedResponse.artistId = artistId[0]._id;
-        // console.log(artistId);
 
         await Album.create(sanitizedResponse);
       }
     }
-    mongoose.disconnect();
+    // mongoose.disconnect();
     return console.log("Albums seeded.");
   } catch (error) {
     return console.error(error);
   }
 };
-
-fetchAlbums();
