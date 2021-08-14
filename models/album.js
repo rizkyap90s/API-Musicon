@@ -35,10 +35,9 @@ const albumSchema = new mongoose.Schema(
       required: true,
       default: "https://i.redd.it/pts7n7ojjol11.jpg",
     },
-    albumRating: {
-      type: Number,
-      required: true,
-      default: 0,
+    spotifyId: {
+      type: String,
+      required: false,
     },
   },
   {
