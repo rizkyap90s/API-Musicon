@@ -31,6 +31,11 @@ const playlistSchema = new mongoose.Schema(
       default:
         "https://i1.sndcdn.com/artworks-000560586507-q7vve7-t500x500.jpg",
     },
+    playlistRating: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
   {
     timestamps: {
