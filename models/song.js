@@ -12,7 +12,7 @@ const songSchema = new mongoose.Schema(
     releaseDate: {
       type: String,
       required: true,
-      default: "1969",
+      default: "2020",
     },
     artistId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -38,11 +38,6 @@ const songSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    },
-    songRating: {
-      type: Number,
-      required: true,
-      default: 0,
     },
   },
   {

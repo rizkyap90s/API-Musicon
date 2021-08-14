@@ -16,13 +16,6 @@ const artistSchema = new mongoose.Schema(
         ref: "album",
       },
     ],
-    songs: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        require: false,
-        ref: "song",
-      },
-    ],
     photo: {
       type: String,
       required: false,
