@@ -1,8 +1,7 @@
 // Rezki's Code
 const validator = require("validator");
-const { promisify } = require("util");
 
-exports.signUpAndUpdateValidator = async (req, res, next) => {
+exports.signUpValidator = async (req, res, next) => {
   try {
     const errorMessages = [];
     if (validator.isEmpty(req.body.fullname) || validator.isEmpty(req.body.username)) {
@@ -13,23 +12,6 @@ exports.signUpAndUpdateValidator = async (req, res, next) => {
     }
     if (!validator.isStrongPassword(req.body.password)) {
       errorMessages.push("your password is not strong enough");
-    }
-
-    if (req.files) {
-      const file = req.files.image;
-      if (!file.mimetype.startsWith("image")) {
-        errorMessages.push("File must be an image");
-      }
-      if (file.size > 1000000) {
-        errorMessages.push("Image must be less than 1MB");
-      }
-      if (errorMessages.length > 0) {
-        return next({ statusCode: 404, messages: errorMessages });
-      }
-      file.name = new Date().getTime() + "_" + file.name;
-      const move = promisify(file.mv);
-      await move(`./public/images/users/${file.name}`);
-      req.body.image = file.name;
     }
 
     if (errorMessages.length > 0) {
