@@ -6,7 +6,7 @@ const {
   signUpAndUpdateValidator,
   signInValidator,
 } = require("../middlewares/validators/auth");
-const { sendEmail } = require("../middlewares/utils/mailer");
+const { sendEmail } = require("../middlewares/mailer");
 
 const router = express.Router();
 
