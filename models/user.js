@@ -1,6 +1,7 @@
 // Rezki's Code
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
+const mongoosePatchUpdate = require("mongoose-patch-update");
 const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
@@ -57,5 +58,6 @@ function getImage(img) {
   }
   return `/images/users/${img}`;
 }
+userSchema.plugin(mongoosePatchUpdate);
 userSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 module.exports = mongoose.model("user", userSchema);
