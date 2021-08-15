@@ -1,8 +1,8 @@
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 }); // Config environment
-const mongoose = require("mongoose");
 
+const mongoose = require("mongoose");
 mongoose
   .connect(process.env.MONGO_URI, {
     useCreateIndex: true, // Enable unique
