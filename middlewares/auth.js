@@ -3,7 +3,7 @@ const LocalStrategy = require("passport-local").Strategy; // Login but not using
 const bcrypt = require("bcrypt"); // to compare the password
 const JWTstrategy = require("passport-jwt").Strategy; // to enable jwt in passport
 const ExtractJWT = require("passport-jwt").ExtractJwt; // to extract or read jwt
-const { User } = require("../../models"); // Import user
+const { User } = require("../models"); // Import user
 
 // Logic to register
 exports.register = (req, res, next) => {
@@ -17,6 +17,7 @@ exports.register = (req, res, next) => {
     }
 
     req.user = user;
+    console.log(req.body);
 
     next();
   })(req, res, next);
@@ -211,23 +212,27 @@ passport.use(
 );
 
 exports.adminOrSameUser = (req, res, next) => {
-  passport.authorize("adminOrSameUser", { session: false }, (err, user, info) => {
-    if (err) {
-      return next({ message: err.message, statusCode: 403 });
+  passport.authorize(
+    "adminOrSameUser",
+    { session: false },
+    (err, user, info) => {
+      if (err) {
+        return next({ message: err.message, statusCode: 403 });
+      }
+
+      if (!user) {
+        return next({ message: info.message, statusCode: 403 });
+      }
+
+      if (info.message == "user" && user.user !== req.params.id) {
+        return next({ message: "Forbidden access", statusCode: 403 });
+      }
+
+      req.user = user;
+
+      next();
     }
-
-    if (!user) {
-      return next({ message: info.message, statusCode: 403 });
-    }
-
-    if (info.message == "user" && user.user !== req.params.id) {
-      return next({ message: "Forbidden access", statusCode: 403 });
-    }
-
-    req.user = user;
-
-    next();
-  })(req, res, next);
+  )(req, res, next);
 };
 
 passport.use(
