@@ -1,6 +1,19 @@
 // Adib's Code
 const validator = require("validator");
 
+exports.getDetailValidator = async (req, res, next) => {
+  try {
+    if (!validator.isMongoId(req.params.id)) {
+      return next({ message: "Id is not valid", statusCode: 400 });
+    }
+
+    next();
+  } catch (error) {
+    /* istanbul ignore next */
+    next(error);
+  }
+};
+
 exports.queryValidator = async (req, res, next) => {
   try {
     const errorMessages = [];

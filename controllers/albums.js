@@ -2,23 +2,6 @@
 const { Song, Artist } = require("../models");
 
 class SongCtrl {
-  async getDetailSong(req, res, next) {
-    try {
-      let data = await Song.findById(req.params.id).populate({
-        path: "artistId",
-        model: Artist,
-      });
-
-      if (!data) {
-        return next({ message: "Movie not found", statusCode: 404 });
-      }
-
-      res.status(200).json({ data });
-    } catch (error) {
-      next(error);
-    }
-  }
-
   async getSongByTitle(req, res, next) {
     try {
       const getTitle = req.query.title;

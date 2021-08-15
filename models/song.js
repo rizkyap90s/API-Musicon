@@ -50,4 +50,5 @@ const songSchema = new mongoose.Schema(
 );
 
 songSchema.plugin(mongooseDelete, { overrideMethods: "all" });
+
 module.exports = mongoose.model("Song", songSchema);

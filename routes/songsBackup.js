@@ -5,15 +5,19 @@ const express = require("express");
 const { user } = require("../middlewares/auth");
 
 // Import validator
-const { queryValidator } = require("../middlewares/validators/songsBackup");
+const {
+  getDetailValidator,
+  queryValidator,
+} = require("../middlewares/validators/songsBackup");
 
 // Import controller
-const { getSongByTitle } = require("../controllers/songsBackup");
+const { getDetailSong, getSongByTitle } = require("../controllers/songsBackup");
 
 // Router
 const router = express.Router();
 
 // Make some routes
+router.route("/:id").get(getDetailValidator, getDetailSong);
 router.route("/search").get(queryValidator, getSongByTitle);
 
 // Exports
