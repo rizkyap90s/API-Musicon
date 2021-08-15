@@ -43,6 +43,36 @@ passport.use(
   )
 );
 
+// isLoggedIn logic
+exports.isLoggedIn = (req, res, next) => {
+  passport.authorize("isLoggedIn", { session: false }, (user) => {
+    if (!user) {
+      return next({ message: "You have to login", statusCode: 404 });
+    }
+    next();
+  })(req, res, next);
+};
+
+passport.use(
+  "isLoggedIn",
+  new JWTstrategy(
+    {
+      secretOrKey: process.env.JWT_SECRET,
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    },
+    async (token, done) => {
+      try {
+        if (token) {
+          return done(true);
+        }
+        return done(false);
+      } catch (error) {
+        return done(false);
+      }
+    }
+  )
+);
+
 // Logic to login
 exports.login = (req, res, next) => {
   passport.authenticate("login", { session: false }, (err, user, info) => {
@@ -212,27 +242,23 @@ passport.use(
 );
 
 exports.adminOrSameUser = (req, res, next) => {
-  passport.authorize(
-    "adminOrSameUser",
-    { session: false },
-    (err, user, info) => {
-      if (err) {
-        return next({ message: err.message, statusCode: 403 });
-      }
-
-      if (!user) {
-        return next({ message: info.message, statusCode: 403 });
-      }
-
-      if (info.message == "user" && user.user !== req.params.id) {
-        return next({ message: "Forbidden access", statusCode: 403 });
-      }
-
-      req.user = user;
-
-      next();
+  passport.authorize("adminOrSameUser", { session: false }, (err, user, info) => {
+    if (err) {
+      return next({ message: err.message, statusCode: 403 });
     }
-  )(req, res, next);
+
+    if (!user) {
+      return next({ message: info.message, statusCode: 403 });
+    }
+
+    if (info.message == "user" && user.user !== req.params.id) {
+      return next({ message: "Forbidden access", statusCode: 403 });
+    }
+
+    req.user = user;
+
+    next();
+  })(req, res, next);
 };
 
 passport.use(
