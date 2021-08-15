@@ -21,7 +21,7 @@ exports.fetchAlbums = async function () {
       for (let i = 1; i < 4; i++) {
         /* Only create 3 albums per artist. 
         Starting index from 1 because one of the aritsts' most recent album doesn't follow the format,
-        so it is be omitted.
+        so it is omitted.
         */
         const sanitizedResponse = {
           albumTitle: response.data.items[i].name,
@@ -40,7 +40,7 @@ exports.fetchAlbums = async function () {
         await Album.create(sanitizedResponse);
       }
     }
-    // mongoose.disconnect();
+
     return console.log("Albums seeded.");
   } catch (error) {
     return console.error(error);

@@ -23,7 +23,7 @@ exports.fetchArtists = async function () {
         photo: response.data.images[0].url,
       });
     }
-    // mongoose.disconnect();
+
     return console.log("Artists seeded.");
   } catch (error) {
     return console.error(error);
