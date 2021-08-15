@@ -2,7 +2,6 @@ const axios = require("axios");
 let dumps = require("./utils/dumps.json");
 const { token } = require("./utils/token"); // token expires in ~1 hour
 const { Artist, Album } = require("../models");
-const mongoose = require("mongoose");
 
 const API_PARTIAL = "https://api.spotify.com/v1";
 
@@ -20,7 +19,10 @@ exports.fetchAlbums = async function () {
       );
 
       for (let i = 1; i < 4; i++) {
-        // Only create 3 albums per artist
+        /* Only create 3 albums per artist. 
+        Starting index from 1 because one of the aritsts' most recent album doesn't follow the format,
+        so it is be omitted.
+        */
         const sanitizedResponse = {
           albumTitle: response.data.items[i].name,
           releaseDate: response.data.items[i].release_date,

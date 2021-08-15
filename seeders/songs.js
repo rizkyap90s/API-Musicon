@@ -1,7 +1,6 @@
 const axios = require("axios");
 const { token } = require("./utils/token"); // token expires in ~1 hour
 const { Album, Song } = require("../models");
-const mongoose = require("mongoose");
 
 const API_PARTIAL = "https://api.spotify.com/v1";
 
@@ -40,7 +39,6 @@ exports.fetchSongs = async function () {
       }
     }
 
-    mongoose.disconnect();
     return console.log("Songs seeded.");
   } catch (error) {
     return console.error(error);

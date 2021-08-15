@@ -2,7 +2,6 @@ const axios = require("axios");
 let dumps = require("./utils/dumps.json");
 const { token } = require("./utils/token"); // token expires in ~1 hour
 const { Artist } = require("../models");
-const mongoose = require("mongoose");
 
 const API_PARTIAL = "https://api.spotify.com/v1";
 
