@@ -62,7 +62,8 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
 /* Import routes */
 const auth = require("./routes/auth");
 const playlists = require("./routes/playlists");
-const songs = require("./routes/songs");
+// const songs = require("./routes/songs");
+const songsBackup = require("./routes/songsBackup");
 const users = require("./routes/users");
 
 /* Import errorHander */
@@ -86,7 +87,8 @@ app.use(express.static("public"));
 /* Use the routes */
 app.use("/auth", auth);
 app.use("/playlists", playlists);
-app.use("/songs", songs);
+// app.use("/songs", songs);
+app.use("/songs", songsBackup);
 app.use("/users", users);
 
 /* If route not found */
