@@ -2,7 +2,7 @@
 const express = require("express");
 
 // Import auth
-const { user } = require("../middlewares/auth");
+// const { isLoggedIn } = require("../middlewares/auth");
 
 // Import validator
 const {
@@ -17,8 +17,8 @@ const { getDetailSong, getSongByTitle } = require("../controllers/songsBackup");
 const router = express.Router();
 
 // Make some routes
-router.route("/:id").get(getDetailValidator, getDetailSong);
-router.route("/search").get(queryValidator, getSongByTitle);
+router.route("/:id").get(/* isLoggedIn, */ getDetailValidator, getDetailSong);
+router.route("/search").get(/* isLoggedIn, */ queryValidator, getSongByTitle);
 
 // Exports
 module.exports = router;

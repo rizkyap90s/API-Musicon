@@ -65,6 +65,7 @@ const playlists = require("./routes/playlists");
 // const songs = require("./routes/songs");
 const songsBackup = require("./routes/songsBackup");
 const users = require("./routes/users");
+const albums = require("./routes/albums");
 
 /* Import errorHander */
 const errorHandler = require("./middlewares/errorHandler");
@@ -90,6 +91,7 @@ app.use("/auth", auth);
 // app.use("/songs", songs);
 app.use("/songs", songsBackup);
 app.use("/users", users);
+app.use("/albums", albums);
 
 /* If route not found */
 app.all("*", (req, res, next) => {
