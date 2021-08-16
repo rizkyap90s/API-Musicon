@@ -31,7 +31,7 @@ deploy:
   stage: deploy
   # Config to use our Runner with Executor Shell
   tags:
-    - server
+    - musicon
   script:
     # Only copy changed files to project folder
     - cp -r -u * $PROJECT_DIR
