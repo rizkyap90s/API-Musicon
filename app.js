@@ -13,6 +13,7 @@ const hpp = require("hpp");
 const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
+const fileUpload = require("express-fileupload");
 
 const app = express(); // Make express app
 
@@ -48,12 +49,9 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
   app.use(morgan("dev"));
 } else {
   // create a write stream (in append mode)
-  let accessLogStream = fs.createWriteStream(
-    path.join(__dirname, "access.log"),
-    {
-      flags: "a",
-    }
-  );
+  let accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
+    flags: "a",
+  });
 
   // setup the logger
   app.use(morgan("combined", { stream: accessLogStream }));
@@ -61,7 +59,7 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
 
 /* Import routes */
 const auth = require("./routes/auth");
-// const playlists = require("./routes/playlists");
+const playlists = require("./routes/playlists");
 // const songs = require("./routes/songs");
 const songsBackup = require("./routes/songsBackup");
 const users = require("./routes/users");
@@ -87,7 +85,7 @@ app.use(express.static("public"));
 
 /* Use the routes */
 app.use("/auth", auth);
-// app.use("/playlists", playlists);
+app.use("/playlists", playlists);
 // app.use("/songs", songs);
 app.use("/songs", songsBackup);
 app.use("/users", users);

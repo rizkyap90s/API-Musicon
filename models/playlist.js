@@ -28,8 +28,7 @@ const playlistSchema = new mongoose.Schema(
     playlistImage: {
       type: String,
       required: true,
-      default:
-        "https://i1.sndcdn.com/artworks-000560586507-q7vve7-t500x500.jpg",
+      default: "https://i1.sndcdn.com/artworks-000560586507-q7vve7-t500x500.jpg",
     },
     playlistRating: {
       type: Number,

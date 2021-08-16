@@ -35,7 +35,9 @@ const userSchema = new mongoose.Schema(
     photo: {
       type: String,
       required: false,
-      get: getImage,
+      // get: getImage,
+      default:
+        "https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg",
     },
   },
   {
@@ -52,12 +54,12 @@ function setPassword(password) {
   return bcrypt.hashSync(password, 10);
 }
 
-function getImage(img) {
-  if (!img || img.includes("https") || img.includes("http")) {
-    return img;
-  }
-  return `/images/users/${img}`;
-}
+// function getImage(img) {
+//   if (!img || img.includes("https") || img.includes("http")) {
+//     return img;
+//   }
+//   return `/images/users/${img}`;
+// }
 userSchema.plugin(mongoosePatchUpdate);
 userSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 module.exports = mongoose.model("user", userSchema);

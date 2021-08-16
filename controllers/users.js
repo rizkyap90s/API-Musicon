@@ -2,6 +2,7 @@
 const { User } = require("../models");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const bcrypt = require("bcrypt");
 
 class Users {
   async getUserById(req, res, next) {
@@ -15,6 +16,7 @@ class Users {
 
   async updateDataUserById(req, res, next) {
     try {
+      if (req.file) req.body.photo = `./${req.file.path}`;
       const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
         new: true,
       }).select("-password -__v");
@@ -28,10 +30,11 @@ class Users {
   }
   async updatePasswordUserById(req, res, next) {
     try {
-      let id = { _id: ObjectId(req.params.id) };
-      let updatePassword = { password: req.body.password };
-      const data = await User.patchUpdate(id, updatePassword, ["email"], "");
-      res.status(201).json({ message: `password ${data.fullname} has been changed` });
+      req.body.password = req.body.newPassword;
+      const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,
+      });
+      res.status(201).json({ message: `password has been changed` });
     } catch (error) {
       next(error);
     }

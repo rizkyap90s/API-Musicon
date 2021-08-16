@@ -7,6 +7,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET,
 });
 
+console.log(process.env.CLOUDINARY_CLOUD_NAME);
+
 const imgStorage = new CloudinaryStorage({
   cloudinary,
   params: {
@@ -15,12 +17,12 @@ const imgStorage = new CloudinaryStorage({
   },
 });
 
-const songStorage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: "Musicon/mp3s",
-    allowedFormats: ["mp3"],
-  },
-});
+// const songStorage = new CloudinaryStorage({
+//   cloudinary,
+//   params: {
+//     folder: "Musicon/mp3s",
+//     allowedFormats: ["mp3"],
+//   },
+// });
 
-module.exports = { cloudinary, imgStorage, songStorage };
+module.exports = { cloudinary, imgStorage };

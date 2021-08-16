@@ -49,6 +49,7 @@ exports.isLoggedIn = (req, res, next) => {
     if (!user) {
       return next({ message: "You have to login", statusCode: 401 });
     }
+    req.user = user;
     next();
   })(req, res, next);
 };
@@ -63,7 +64,7 @@ passport.use(
     async (token, done) => {
       try {
         if (token) {
-          return done(true);
+          return done(token);
         }
         return done(false);
       } catch (error) {
