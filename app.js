@@ -66,6 +66,7 @@ const auth = require("./routes/auth");
 const songsBackup = require("./routes/songsBackup");
 const users = require("./routes/users");
 const albums = require("./routes/albums");
+const ratings = require("./routes/ratings");
 
 /* Import errorHander */
 const errorHandler = require("./middlewares/errorHandler");
@@ -92,6 +93,7 @@ app.use("/auth", auth);
 app.use("/songs", songsBackup);
 app.use("/users", users);
 app.use("/albums", albums);
+app.use("/playlists/:playlistId/rating", ratings);
 
 /* If route not found */
 app.all("*", (req, res, next) => {
