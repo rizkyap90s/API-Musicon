@@ -19,3 +19,4 @@ exports.Artist = require("./artist");
 exports.Playlist = require("./playlist");
 exports.Song = require("./song");
 exports.User = require("./user");
+exports.Rating = require("./rating");

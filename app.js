@@ -64,6 +64,7 @@ const playlists = require("./routes/playlists");
 const songsBackup = require("./routes/songsBackup");
 const users = require("./routes/users");
 const albums = require("./routes/albums");
+const ratings = require("./routes/ratings");
 
 /* Import errorHander */
 const errorHandler = require("./middlewares/errorHandler");
@@ -85,6 +86,7 @@ app.use(express.static("public"));
 
 /* Use the routes */
 app.use("/auth", auth);
+app.use("/playlists/:playlistId/rating", ratings);
 app.use("/playlists", playlists);
 // app.use("/songs", songs);
 app.use("/songs", songsBackup);
