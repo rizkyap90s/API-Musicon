@@ -1,5 +1,5 @@
 // Adib's Code
-const { Album, Artist } = require("../models");
+const { Album, Artist, Song } = require("../models");
 
 class AlbumCtrl {
   async getNewAlbums(req, res, next) {
@@ -42,6 +42,19 @@ class AlbumCtrl {
       if (album.length === 0) {
         return next({ message: "Album not found", statusCode: 404 });
       }
+
+      res.status(200).json({ album });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getDetailAlbum(req, res, next) {
+    try {
+      const album = await Album.findById(req.params.id).populate({
+        path: "songs",
+        model: Song,
+      });
 
       res.status(200).json({ album });
     } catch (error) {
