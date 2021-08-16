@@ -9,14 +9,11 @@ exports.fetchAlbums = async function () {
   try {
     await Album.deleteMany(); // delete all previous entries
     for (artist in dumps.artists) {
-      const response = await axios.get(
-        `${API_PARTIAL}/artists/${dumps.artists[artist]}/albums`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${API_PARTIAL}/artists/${dumps.artists[artist]}/albums`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       for (let i = 1; i < 4; i++) {
         /* Only create 3 albums per artist. 
@@ -46,3 +43,4 @@ exports.fetchAlbums = async function () {
     return console.error(error);
   }
 };
+// dhiaid
