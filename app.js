@@ -88,12 +88,12 @@ app.use(express.static("public"));
 
 /* Use the routes */
 app.use("/auth", auth);
+app.use("/playlists/:playlistId/rating", ratings);
 // app.use("/playlists", playlists);
 // app.use("/songs", songs);
 app.use("/songs", songsBackup);
 app.use("/users", users);
 app.use("/albums", albums);
-app.use("/playlists/:playlistId/rating", ratings);
 
 /* If route not found */
 app.all("*", (req, res, next) => {

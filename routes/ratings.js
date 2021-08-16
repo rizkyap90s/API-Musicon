@@ -15,7 +15,7 @@ const router = express.Router({ mergeParams: true });
 
 // Make some routes
 router.route("/").post(isLoggedIn, ratingValidator, addRating);
-router.route("/").put(isLoggedIn, ratingValidator, updateRating);
+router.route("/:id").put(isLoggedIn, ratingValidator, updateRating);
 
 // Exports
 module.exports = router;
