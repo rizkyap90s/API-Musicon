@@ -61,7 +61,7 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
 
 /* Import routes */
 const auth = require("./routes/auth");
-const playlists = require("./routes/playlists");
+// const playlists = require("./routes/playlists");
 // const songs = require("./routes/songs");
 const songsBackup = require("./routes/songsBackup");
 const users = require("./routes/users");
