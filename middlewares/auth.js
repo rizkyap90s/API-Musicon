@@ -47,7 +47,7 @@ passport.use(
 exports.isLoggedIn = (req, res, next) => {
   passport.authorize("isLoggedIn", { session: false }, (user) => {
     if (!user) {
-      return next({ message: "You have to login", statusCode: 404 });
+      return next({ message: "You have to login", statusCode: 401 });
     }
     next();
   })(req, res, next);
