@@ -76,23 +76,47 @@ passport.use(
 
 // Logic to login
 exports.login = (req, res, next) => {
-  passport.authenticate("login", { session: false }, (err, user, info) => {
-    if (err) {
-      return next({ message: err.message, statusCode: 401 });
-    }
+  if (req.body.email) {
+    passport.authenticate(
+      "loginEmail",
+      { session: false },
+      (err, user, info) => {
+        if (err) {
+          return next({ message: err.message, statusCode: 401 });
+        }
 
-    if (!user) {
-      return next({ message: info.message, statusCode: 401 });
-    }
+        if (!user) {
+          return next({ message: info.message, statusCode: 401 });
+        }
 
-    req.user = user;
+        req.user = user;
 
-    next();
-  })(req, res, next);
+        next();
+      }
+    )(req, res, next);
+  } else if (req.body.username) {
+    passport.authenticate(
+      "loginUsername",
+      { session: false },
+      (err, user, info) => {
+        if (err) {
+          return next({ message: err.message, statusCode: 401 });
+        }
+
+        if (!user) {
+          return next({ message: info.message, statusCode: 401 });
+        }
+
+        req.user = user;
+
+        next();
+      }
+    )(req, res, next);
+  }
 };
 
 passport.use(
-  "login",
+  "loginEmail",
   new LocalStrategy(
     {
       usernameField: "email",
@@ -101,13 +125,44 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        const data = await User.findOne({ email });
+        data = await User.findOne({ email: req.body.email });
 
         if (!data) {
           return done(null, false, { message: "User is not found!" });
         }
 
-        const validate = await bcrypt.compare(password, data.password);
+        const validate = await bcrypt.compare(req.body.password, data.password);
+
+        if (!validate) {
+          return done(null, false, { message: "Wrong password!" });
+        }
+
+        return done(null, data, { message: "Login success!" });
+      } catch (e) {
+        /* istanbul ignore next */
+        return done(e, false, { message: "User can't be created" });
+      }
+    }
+  )
+);
+
+passport.use(
+  "loginUsername",
+  new LocalStrategy(
+    {
+      usernameField: "username",
+      passwordField: "password",
+      passReqToCallback: true,
+    },
+    async (req, email, password, done) => {
+      try {
+        data = await User.findOne({ username: req.body.username });
+
+        if (!data) {
+          return done(null, false, { message: "User is not found!" });
+        }
+
+        const validate = await bcrypt.compare(req.body.password, data.password);
 
         if (!validate) {
           return done(null, false, { message: "Wrong password!" });
@@ -243,23 +298,27 @@ passport.use(
 );
 
 exports.adminOrSameUser = (req, res, next) => {
-  passport.authorize("adminOrSameUser", { session: false }, (err, user, info) => {
-    if (err) {
-      return next({ message: err.message, statusCode: 403 });
+  passport.authorize(
+    "adminOrSameUser",
+    { session: false },
+    (err, user, info) => {
+      if (err) {
+        return next({ message: err.message, statusCode: 403 });
+      }
+
+      if (!user) {
+        return next({ message: info.message, statusCode: 403 });
+      }
+
+      if (info.message == "user" && user.user !== req.params.id) {
+        return next({ message: "Forbidden access", statusCode: 403 });
+      }
+
+      req.user = user;
+
+      next();
     }
-
-    if (!user) {
-      return next({ message: info.message, statusCode: 403 });
-    }
-
-    if (info.message == "user" && user.user !== req.params.id) {
-      return next({ message: "Forbidden access", statusCode: 403 });
-    }
-
-    req.user = user;
-
-    next();
-  })(req, res, next);
+  )(req, res, next);
 };
 
 passport.use(
