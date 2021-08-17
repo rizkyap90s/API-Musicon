@@ -11,13 +11,20 @@ const {
 } = require("../middlewares/validators/songsBackup");
 
 // Import controller
-const { getDetailSong, getSongByTitle } = require("../controllers/songsBackup");
+const {
+  getDetailSong,
+  getSongByTitle,
+  getNewReleases,
+  getRecommended,
+} = require("../controllers/songsBackup");
 
 // Router
 const router = express.Router();
 
 // Make some routes
 router.route("/search").get(isLoggedIn, queryValidator, getSongByTitle);
+router.route("/new").get(isLoggedIn, queryValidator, getNewReleases);
+router.route("/recommended").get(isLoggedIn, queryValidator, getRecommended);
 router.route("/:id").get(isLoggedIn, getDetailValidator, getDetailSong);
 
 // Exports

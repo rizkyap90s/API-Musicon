@@ -42,6 +42,23 @@ class SongCtrl {
       next(error);
     }
   }
+
+  async getNewReleases(req, res, next) {
+    try {
+      // const songs = await Song.find
+      res.status(200).json({ message: "Hello" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getRecommended(req, res, next) {
+    try {
+      res.status(200).json({ message: "Hello" });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new SongCtrl();
