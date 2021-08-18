@@ -2,6 +2,7 @@ node_modules
 package-lock.json
 .env.development
 .env.test
+.env.production
 coverage
 .vscode
 .DS_Store
