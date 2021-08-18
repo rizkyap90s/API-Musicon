@@ -24,8 +24,14 @@ const { isLoggedIn } = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.get("/:id", getUserByIdValidator, getUserById);
-router.put("/updatedata/:id", updateDataValidator, uploadImage.single("photo"), updateDataUserById);
+router.get("/:id", isLoggedIn, getUserByIdValidator, getUserById);
+router.put(
+  "/updatedata/:id",
+  isLoggedIn,
+  updateDataValidator,
+  uploadImage.single("photo"),
+  updateDataUserById
+);
 router.put("/updatepassword/:id", isLoggedIn, updatePasswordValidator, updatePasswordUserById);
 
 module.exports = router;

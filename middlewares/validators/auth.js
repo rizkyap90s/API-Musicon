@@ -4,7 +4,10 @@ const validator = require("validator");
 exports.signUpValidator = async (req, res, next) => {
   try {
     const errorMessages = [];
-    if (validator.isEmpty(req.body.fullname) || validator.isEmpty(req.body.username)) {
+    if (
+      validator.isEmpty(req.body.fullname) ||
+      validator.isEmpty(req.body.username)
+    ) {
       errorMessages.push("field can't be empty");
     }
     if (!validator.isEmail(req.body.email)) {
@@ -26,8 +29,10 @@ exports.signUpValidator = async (req, res, next) => {
 exports.signInValidator = async (req, res, next) => {
   try {
     const errorMessages = [];
-    if (!validator.isEmail(req.body.email)) {
-      errorMessages.push("email is not valid");
+    if (req.body.email) {
+      if (!validator.isEmail(req.body.email)) {
+        errorMessages.push("email is not valid");
+      }
     }
     if (validator.isEmpty(req.body.password)) {
       errorMessages.push("field can't be empty");

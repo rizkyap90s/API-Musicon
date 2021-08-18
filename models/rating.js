@@ -28,7 +28,6 @@ const RatingSchema = new mongoose.Schema(
   }
 );
 
-// Prevent user for submitting more than one review per movie
 RatingSchema.index({ authorId: 1, playlistId: 1 }, { unique: true });
 
 // Static method to get average rating
