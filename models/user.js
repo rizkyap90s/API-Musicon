@@ -25,13 +25,13 @@ const userSchema = new mongoose.Schema(
       required: true,
       set: setPassword,
     },
-    playlists: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        require: false,
-        ref: "playlist",
-      },
-    ],
+    // playlists: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     require: false,
+    //     ref: "playlist",
+    //   },
+    // ],
     photo: {
       type: String,
       required: false,
@@ -45,8 +45,9 @@ const userSchema = new mongoose.Schema(
       createdAt: "createdAt",
       updatedAt: "updatedAt",
     },
-    toObject: { getters: true },
-    toJSON: { getters: true },
+
+    toJSON: { virtuals: true, getters: true },
+    toObject: { virtuals: true },
   }
 );
 
@@ -54,12 +55,13 @@ function setPassword(password) {
   return bcrypt.hashSync(password, 10);
 }
 
-// function getImage(img) {
-//   if (!img || img.includes("https") || img.includes("http")) {
-//     return img;
-//   }
-//   return `/images/users/${img}`;
-// }
+userSchema.virtual("playlists", {
+  ref: "Playlist",
+  localField: "_id",
+  foreignField: "author",
+  justOne: false,
+});
+
 userSchema.plugin(mongoosePatchUpdate);
 userSchema.plugin(mongooseDelete, { overrideMethods: "all" });
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("User", userSchema);

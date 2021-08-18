@@ -7,7 +7,11 @@ const bcrypt = require("bcrypt");
 class Users {
   async getUserById(req, res, next) {
     try {
-      const data = await User.findOne({ _id: req.params.id }).select("-password -__v");
+      const data = await User.findOne({ _id: req.params.id })
+        .populate("playlists")
+        .select("-password -__v");
+
+      data._doc.total = data.playlists.length;
       res.status(200).json({ data });
     } catch (error) {
       next(error);
@@ -31,9 +35,7 @@ class Users {
   async updatePasswordUserById(req, res, next) {
     try {
       req.body.password = req.body.newPassword;
-      const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
-        new: true,
-      });
+      await User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
       res.status(201).json({ message: `password has been changed` });
     } catch (error) {
       next(error);

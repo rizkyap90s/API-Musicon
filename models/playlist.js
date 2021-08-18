@@ -1,6 +1,7 @@
 // Adib's Code
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
+// const { User } = require("../models");
 
 const playlistSchema = new mongoose.Schema(
   {
@@ -48,6 +49,20 @@ const playlistSchema = new mongoose.Schema(
     toJSON: { getters: true },
   }
 );
+
+// playlistSchema.statics.pushToUser = async function (author, _id) {
+//   try {
+//     const getUser = await this.model("User").findOne({ _id: author });
+//     getUser.playlists.push(_id);
+//     getUser.save();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// playlistSchema.post("save", function () {
+//   this.constructor.pushToUser(this.author, this._id);
+// });
 
 playlistSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 module.exports = mongoose.model("Playlist", playlistSchema);

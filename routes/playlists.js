@@ -7,15 +7,32 @@ const storage = multer.diskStorage({
     cb(null, "./public/images/playlists");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 const uploadImage = multer({ storage });
 
 const { isLoggedIn } = require("../middlewares/auth");
-const { addNewPlaylist } = require("../controllers/playlists");
+const {
+  addNewPlaylist,
+  getAllPlaylists,
+  getUserPlaylists,
+  updatePlaylistById,
+  deletePlaylistById,
+  getPlaylistById,
+  getPlaylistByTitle,
+} = require("../controllers/playlists");
 const router = express.Router();
 
 router.post("/", isLoggedIn, uploadImage.single("playlistImage"), addNewPlaylist);
+
+router.get("/", isLoggedIn, getAllPlaylists);
+router.get("/search", isLoggedIn, getPlaylistByTitle);
+router.get("/:id", isLoggedIn, getPlaylistById);
+router.get("/users/:id", isLoggedIn, getUserPlaylists);
+
+router.put("/update/:id", isLoggedIn, uploadImage.single("playlistImage"), updatePlaylistById);
+
+router.delete("/:id", isLoggedIn, deletePlaylistById);
 
 module.exports = router;
