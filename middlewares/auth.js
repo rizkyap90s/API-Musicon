@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt"); // to compare the password
 const JWTstrategy = require("passport-jwt").Strategy; // to enable jwt in passport
 const ExtractJWT = require("passport-jwt").ExtractJwt; // to extract or read jwt
 const { User } = require("../models"); // Import user
+const validator = require("validator");
 
 // Logic to register
 exports.register = (req, res, next) => {
@@ -76,7 +77,8 @@ passport.use(
 
 // Logic to login
 exports.login = (req, res, next) => {
-  if (req.body.email) {
+  console.log(req.body.username);
+  if (validator.isEmail(req.body.username)) {
     passport.authenticate(
       "loginEmail",
       { session: false },
@@ -94,7 +96,7 @@ exports.login = (req, res, next) => {
         next();
       }
     )(req, res, next);
-  } else if (req.body.username) {
+  } else {
     passport.authenticate(
       "loginUsername",
       { session: false },
@@ -119,13 +121,13 @@ passport.use(
   "loginEmail",
   new LocalStrategy(
     {
-      usernameField: "email",
+      usernameField: "username",
       passwordField: "password",
       passReqToCallback: true,
     },
     async (req, email, password, done) => {
       try {
-        data = await User.findOne({ email: req.body.email });
+        data = await User.findOne({ email: req.body.username });
 
         if (!data) {
           return done(null, false, { message: "User is not found!" });
