@@ -61,16 +61,22 @@ class Playlists {
 
   async getPlaylistById(req, res, next) {
     try {
-      const data = await Playlist.findOne({ _id: req.params.id }).populate({
-        path: "songs",
-        model: Song,
-        select: { _id: 1, songTitle: 1, songDuration: 1, songImage: 1 },
-        populate: {
-          path: "artistId",
-          model: Artist,
-          select: { _id: 1, name: 1 },
-        },
-      });
+      const data = await Playlist.findOne({ _id: req.params.id })
+        .populate({
+          path: "songs",
+          model: Song,
+          select: { _id: 1, songTitle: 1, songDuration: 1, songImage: 1 },
+          populate: {
+            path: "artistId",
+            model: Artist,
+            select: { _id: 1, name: 1 },
+          },
+        })
+        .populate({
+          path: "author",
+          model: User,
+          select: { _id: 1, username: 1, fullname: 1 },
+        });
       res.status(200).json({ data });
     } catch (error) {
       next(error);
