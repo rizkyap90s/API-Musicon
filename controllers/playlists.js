@@ -6,7 +6,7 @@ class Playlists {
   async addNewPlaylist(req, res, next) {
     try {
       if (req.file) {
-        req.body.playlistImage = `/${req.file.path}`;
+        req.body.playlistImage = "/" + req.file.path.split("/").slice(1).join("/");
       }
       req.body.author = ObjectId(req.user.user);
       // req.body.songs = req.body.songs.split(", ").map((song) => ObjectId(song));
