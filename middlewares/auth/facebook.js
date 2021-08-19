@@ -1,0 +1,39 @@
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+}); // Config environment
+
+const passport = require("passport");
+const FacebookStrategy = require("passport-facebook").Strategy;
+const { User } = require("../../models");
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+    },
+    async function (accessToken, refreshToken, profile, done) {
+      // let user = await User.findOne({ email: profile._json.email });
+
+      // if (!user) {
+      //   const data = {
+      //     username: profile._json.email.split("@")[0],
+      //     fullname: profile._json.name,
+      //     email: profile._json.email,
+      //     password: profile._json.sub,
+      //     photo: profile._json.picture.data.url,
+      //   };
+      //   user = await User.create(data);
+      // }
+
+      console.log(profile);
+
+      return done(null, user);
+    }
+  )
+);

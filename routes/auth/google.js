@@ -6,10 +6,6 @@ require("../../middlewares/auth/google");
 
 const router = express.Router();
 
-const success = (req, res) => {
-  res.status(200).json({ message: `welcome ${req.user._json.email}` });
-};
-
 const callbackGoogle = passport.authenticate("google", {
   failureRedirect: "auth/google/failed", // absolute path, not relative router path
 });
