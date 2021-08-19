@@ -16,6 +16,7 @@ passport.use(
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+      profileFields: ["id", "displayName", "photos", "email"],
     },
     async function (accessToken, refreshToken, profile, done) {
       // let user = await User.findOne({ email: profile._json.email });
@@ -25,7 +26,7 @@ passport.use(
       //     username: profile._json.email.split("@")[0],
       //     fullname: profile._json.name,
       //     email: profile._json.email,
-      //     password: profile._json.sub,
+      //     password: profile._json.id,
       //     photo: profile._json.picture.data.url,
       //   };
       //   user = await User.create(data);
