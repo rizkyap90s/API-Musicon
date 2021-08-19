@@ -21,6 +21,8 @@ const {
   deletePlaylistById,
   getPlaylistById,
   getPlaylistByTitle,
+  addSong,
+  removeSong,
 } = require("../controllers/playlists");
 const router = express.Router();
 
@@ -35,6 +37,9 @@ router.get("/", isLoggedIn, getAllPlaylists);
 router.get("/search", isLoggedIn, getPlaylistByTitle);
 router.get("/:id", isLoggedIn, getPlaylistById);
 router.get("/users/:id", isLoggedIn, getUserPlaylists);
+
+// router.post("/:id", isLoggedIn, addSong);
+// router.delete("/:playlistid/:songid", isLoggedIn, removeSong);
 
 router.put(
   "/update/:id",
