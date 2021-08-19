@@ -9,10 +9,6 @@ const { User } = require("../../models");
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
-// const GOOGLE_CLIENT_ID =
-//   "1031799664857-gtbejiap99fsrl5v6pdnhjp248cockqt.apps.googleusercontent.com";
-// const GOOGLE_CLIENT_SECRET = "GBT8mpLilNb3SYbVwYLKPZqt";
-// const GOOGLE_CALLBACK_URL = "http://localhost:3000/auth/google/callback";
 
 passport.use(
   new GoogleStrategy(
