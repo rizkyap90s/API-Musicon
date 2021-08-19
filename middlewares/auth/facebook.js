@@ -3,23 +3,20 @@ require("dotenv").config({
 }); // Config environment
 
 const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
 const { User } = require("../../models");
 
 passport.serializeUser(function (user, done) {
   done(null, user);
 });
-// const GOOGLE_CLIENT_ID =
-//   "1031799664857-gtbejiap99fsrl5v6pdnhjp248cockqt.apps.googleusercontent.com";
-// const GOOGLE_CLIENT_SECRET = "GBT8mpLilNb3SYbVwYLKPZqt";
-// const GOOGLE_CALLBACK_URL = "http://localhost:3000/auth/google/callback";
 
 passport.use(
-  new GoogleStrategy(
+  new FacebookStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+      profileFields: ["id", "displayName", "photos", "email"],
     },
     async function (accessToken, refreshToken, profile, done) {
       let user = await User.findOne({ email: profile._json.email });
@@ -29,8 +26,8 @@ passport.use(
           username: profile._json.email.split("@")[0],
           fullname: profile._json.name,
           email: profile._json.email,
-          password: profile._json.sub,
-          photo: profile._json.picture,
+          password: profile._json.id,
+          photo: profile._json.picture.data.url,
         };
         user = await User.create(data);
       }
