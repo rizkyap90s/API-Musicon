@@ -7,7 +7,7 @@ require("../../middlewares/auth/facebook");
 const router = express.Router();
 
 const success = (req, res) => {
-  res.status(200).json({ message: "Hello world" });
+  res.status(200).json({ message: req.user });
 };
 
 const callbackFacebook = passport.authenticate("facebook", {
