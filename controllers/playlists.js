@@ -6,17 +6,39 @@ class Playlists {
   async addNewPlaylist(req, res, next) {
     try {
       if (req.file) {
-        req.body.playlistImage = `./${req.file.path}`;
+        req.body.playlistImage = `/${req.file.path}`;
       }
-
       req.body.author = ObjectId(req.user.user);
-      req.body.songs = req.body.songs.split(", ").map((song) => ObjectId(song));
+      // req.body.songs = req.body.songs.split(", ").map((song) => ObjectId(song));
       await Playlist.create(req.body);
       res.status(201).json({ message: "Playlist created" });
     } catch (error) {
       next(error);
     }
   }
+
+  // async addSong(req, res, next) {
+  //   try {
+  //     req.body.songs = req.body.songs.push()
+  //     // req.body.songs = req.body.songs.split(",").map((song) => ObjectId(song));
+  //     const data = await Playlist.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+  //     res.status(201).json({ data });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
+
+  // async removeSong(req, res, next) {
+  //   try {
+  //     req.body.songs = req.body.songs.filter((song) => song !== req.params.songid);
+  //     const data = await Playlist.findOneAndUpdate({ _id: req.params.playlistid }, req.body, {
+  //       new: true,
+  //     });
+  //     req.status(201).json({ data });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
 
   async getAllPlaylists(req, res, next) {
     try {
