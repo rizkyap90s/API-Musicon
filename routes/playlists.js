@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
 });
 const uploadImage = multer({ storage });
 
-const { isLoggedIn } = require("../middlewares/auth");
+const { isLoggedIn } = require("../middlewares/auth/local");
 const {
   addNewPlaylist,
   getAllPlaylists,
@@ -24,14 +24,24 @@ const {
 } = require("../controllers/playlists");
 const router = express.Router();
 
-router.post("/", isLoggedIn, uploadImage.single("playlistImage"), addNewPlaylist);
+router.post(
+  "/",
+  isLoggedIn,
+  uploadImage.single("playlistImage"),
+  addNewPlaylist
+);
 
 router.get("/", isLoggedIn, getAllPlaylists);
 router.get("/search", isLoggedIn, getPlaylistByTitle);
 router.get("/:id", isLoggedIn, getPlaylistById);
 router.get("/users/:id", isLoggedIn, getUserPlaylists);
 
-router.put("/update/:id", isLoggedIn, uploadImage.single("playlistImage"), updatePlaylistById);
+router.put(
+  "/update/:id",
+  isLoggedIn,
+  uploadImage.single("playlistImage"),
+  updatePlaylistById
+);
 
 router.delete("/:id", isLoggedIn, deletePlaylistById);
 

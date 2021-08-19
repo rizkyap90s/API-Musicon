@@ -1,12 +1,12 @@
 // Rezki's Code
 const express = require("express");
-const { getToken } = require("../controllers/auth");
-const { register, login, isLoggedIn } = require("../middlewares/auth");
+const { getToken } = require("../../controllers/auth");
+const { register, login } = require("../../middlewares/auth/local");
 const {
   signInValidator,
   signUpValidator,
-} = require("../middlewares/validators/auth");
-const { sendWelcomeEmail } = require("../middlewares/mailers/welcome");
+} = require("../../middlewares/validators/auth");
+const { sendWelcomeEmail } = require("../../middlewares/mailers/welcome");
 
 const router = express.Router();
 

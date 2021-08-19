@@ -1,7 +1,7 @@
 // Adib's Code
 const express = require("express");
 
-const { isLoggedIn } = require("../middlewares/auth");
+const { isLoggedIn } = require("../middlewares/auth/local");
 
 const { ratingValidator } = require("../middlewares/validators/ratings");
 

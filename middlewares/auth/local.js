@@ -3,7 +3,7 @@ const LocalStrategy = require("passport-local").Strategy; // Login but not using
 const bcrypt = require("bcrypt"); // to compare the password
 const JWTstrategy = require("passport-jwt").Strategy; // to enable jwt in passport
 const ExtractJWT = require("passport-jwt").ExtractJwt; // to extract or read jwt
-const { User } = require("../models"); // Import user
+const { User } = require("../../models"); // Import user
 const validator = require("validator");
 
 // Logic to register
