@@ -18,20 +18,20 @@ passport.use(
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
     },
     async function (accessToken, refreshToken, profile, done) {
-      let user = await User.findOne({ email: profile._json.email });
+      // let user = await User.findOne({ email: profile._json.email });
 
-      if (!user) {
-        const data = {
-          username: profile._json.email.split("@")[0],
-          fullname: profile._json.name,
-          email: profile._json.email,
-          password: profile._json.sub,
-          photo: profile._json.picture.data.url,
-        };
-        user = await User.create(data);
-      }
+      // if (!user) {
+      //   const data = {
+      //     username: profile._json.email.split("@")[0],
+      //     fullname: profile._json.name,
+      //     email: profile._json.email,
+      //     password: profile._json.sub,
+      //     photo: profile._json.picture.data.url,
+      //   };
+      //   user = await User.create(data);
+      // }
 
-      return done(null, user);
+      return done(null, profile);
     }
   )
 );
