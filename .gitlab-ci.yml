@@ -15,6 +15,12 @@ stages:
 #   script:
 #     - echo "MONGO_URI"=$MONGO_URI_TEST > .env.test
 #     - echo "JWT_SECRET"=$JWT_SECRET >> .env.test
+#     - echo "GOOGLE_CLIENT_ID"=$GOOGLE_CLIENT_ID >> .env.test
+#     - echo "GOOGLE_CLIENT_SECRET"=$GOOGLE_CLIENT_SECRET >> .env.test
+#     - echo "GOOGLE_CALLBACK_URL"=$GOOGLE_CALLBACK_URL >> .env.test
+#     - echo "FACEBOOK_CLIENT_ID"=$FACEBOOK_CLIENT_ID >> .env.test
+#     - echo "FACEBOOK_CLIENT_SECRET"=$FACEBOOK_CLIENT_SECRET >> .env.test
+#     - echo "FACEBOOK_CALLBACK_URL"=$FACEBOOK_CALLBACK_URL >> .env.test
 #     - npm i
 #     - npm run test
 #   # Defines the names of branches and tags the job runs for
@@ -35,6 +41,12 @@ deploy:
     - cd $PROJECT_DIR
     - echo "MONGO_URI"=$MONGO_URI_PRODUCTION > .env.production
     - echo "JWT_SECRET"=$JWT_SECRET >> .env.production
+    - echo "GOOGLE_CLIENT_ID"=$GOOGLE_CLIENT_ID >> .env.production
+    - echo "GOOGLE_CLIENT_SECRET"=$GOOGLE_CLIENT_SECRET >> .env.production
+    - echo "GOOGLE_CALLBACK_URL"=$GOOGLE_CALLBACK_URL >> .env.production
+    - echo "FACEBOOK_CLIENT_ID"=$FACEBOOK_CLIENT_ID >> .env.production
+    - echo "FACEBOOK_CLIENT_SECRET"=$FACEBOOK_CLIENT_SECRET >> .env.production
+    - echo "FACEBOOK_CALLBACK_URL"=$FACEBOOK_CALLBACK_URL >> .env.production
     - npm i --only=prod
     # Restart NodeJS service
     - npm run stop || true
