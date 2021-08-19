@@ -17,24 +17,25 @@ class Playlists {
     }
   }
 
-  // async addSong(req, res, next) {
-  //   try {
-  //     req.body.songs = req.body.songs.push()
-  //     // req.body.songs = req.body.songs.split(",").map((song) => ObjectId(song));
-  //     const data = await Playlist.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
-  //     res.status(201).json({ data });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
+  async addSong(req, res, next) {
+    try {
+      // req.body.songs = req.body.songs.push();
+      req.body.songs = req.body.songs.split(",").map((song) => ObjectId(song));
+      const data = await Playlist.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+      res.status(201).json({ data });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   // async removeSong(req, res, next) {
   //   try {
-  //     req.body.songs = req.body.songs.filter((song) => song !== req.params.songid);
-  //     const data = await Playlist.findOneAndUpdate({ _id: req.params.playlistid }, req.body, {
-  //       new: true,
-  //     });
-  //     req.status(201).json({ data });
+  //     const findPlaylist = await Playlist.findOne({ _id: req.params.playlistid });
+  //     // const data = await findPlaylist.songs.filter((song) => song !== req.params.songid);
+  //     const getIndexSong = await findPlaylist.songs.indexOf(req.params.songid);
+  //     const data = await findPlaylist.songs.splice(getIndexSong, 1);
+  //     findPlaylist.updateOne({ _id: req.params.playlistid }, data, { new: true });
+  //     res.status(201).json({ data: findPlaylist.songs });
   //   } catch (error) {
   //     next(error);
   //   }
@@ -96,7 +97,7 @@ class Playlists {
         req.body.playlistImage = `./${req.file.path}`;
       }
       req.body.author = ObjectId(req.user.user);
-      req.body.songs = req.body.songs.split(", ").map((song) => ObjectId(song));
+      // req.body.songs = req.body.songs.split(", ").map((song) => ObjectId(song));
       const data = await Playlist.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
       res.status(200).json({ data });
     } catch (error) {
