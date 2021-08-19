@@ -6,11 +6,11 @@ class Playlists {
   async addNewPlaylist(req, res, next) {
     try {
       if (req.file) {
-        req.body.playlistImage = `./${req.file.path}`;
+        req.body.playlistImage = `/${req.file.path}`;
       }
 
       req.body.author = ObjectId(req.user.user);
-      req.body.songs = req.body.songs.split(", ").map((song) => ObjectId(song));
+      // req.body.songs = req.body.songs.split(", ").map((song) => ObjectId(song));
       await Playlist.create(req.body);
       res.status(201).json({ message: "Playlist created" });
     } catch (error) {
