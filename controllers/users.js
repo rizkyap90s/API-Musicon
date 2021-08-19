@@ -21,7 +21,7 @@ class Users {
   async updateDataUserById(req, res, next) {
     try {
       if (req.file) {
-        req.body.playlistImage = "/" + req.file.path.split("/").slice(1).join("/");
+        req.body.photo = "/" + req.file.path.split("/").slice(1).join("/");
       }
       const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
         new: true,
