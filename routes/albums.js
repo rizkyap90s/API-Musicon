@@ -2,7 +2,7 @@
 const express = require("express");
 
 // Import auth
-const { isLoggedIn } = require("../middlewares/auth");
+const { isLoggedIn } = require("../middlewares/auth/local");
 
 // Import validator
 const {

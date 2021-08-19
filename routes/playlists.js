@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
 });
 const uploadImage = multer({ storage });
 
-const { isLoggedIn } = require("../middlewares/auth");
+const { isLoggedIn } = require("../middlewares/auth/local");
 const {
   addNewPlaylist,
   getAllPlaylists,
