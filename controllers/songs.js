@@ -27,7 +27,7 @@ class SongCtrl {
 
       const song = await Song.find({ songTitle: { $regex: regex } })
         .populate({ path: "artistId", model: Artist })
-        .select("songTitle songImage artistId")
+        .select("songTitle songImage artistId tags")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
         .sort("-releaseDate");
