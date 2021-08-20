@@ -19,10 +19,11 @@ class Playlists {
 
   async addSong(req, res, next) {
     try {
-      // req.body.songs = req.body.songs.push();
-      req.body.songs = req.body.songs.split(",").map((song) => ObjectId(song));
-      const data = await Playlist.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
-      res.status(201).json({ data });
+      const findPlaylist = await Playlist.findById(req.params.playlistid);
+      findPlaylist.songs.push(req.params.songid);
+      findPlaylist.save();
+
+      res.status(201).json({ data: findPlaylist });
     } catch (error) {
       next(error);
     }
@@ -34,6 +35,8 @@ class Playlists {
       const getIndexSong = findPlaylist.songs.indexOf(req.params.songid);
 
       findPlaylist.songs.splice(getIndexSong, 1);
+
+      console.log(findPlaylist.songs);
 
       const data = await Playlist.findOneAndUpdate(
         { _id: req.params.playlistid },

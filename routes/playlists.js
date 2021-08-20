@@ -22,7 +22,7 @@ const {
   getPlaylistById,
   getPlaylistByTitle,
   addSong,
-  // removeSong,
+  removeSong,
 } = require("../controllers/playlists");
 const router = express.Router();
 
@@ -33,8 +33,8 @@ router.get("/search", isLoggedIn, getPlaylistByTitle);
 router.get("/:id", isLoggedIn, getPlaylistById);
 router.get("/users/:id", isLoggedIn, getUserPlaylists);
 
-router.post("/:id", isLoggedIn, addSong);
-// router.delete("/:playlistid/:songid", isLoggedIn, removeSong);
+router.post("/:playlistid/:songid", isLoggedIn, addSong);
+router.delete("/:playlistid/:songid", isLoggedIn, removeSong);
 
 router.put("/update/:id", isLoggedIn, uploadImage.single("playlistImage"), updatePlaylistById);
 
