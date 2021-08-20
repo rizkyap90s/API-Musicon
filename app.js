@@ -65,8 +65,7 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
 // const facebook = require("./routes/auth/facebook");
 const auth = require("./routes/auth/local");
 const playlists = require("./routes/playlists");
-// const songs = require("./routes/songs");
-const songsBackup = require("./routes/songsBackup");
+const songs = require("./routes/songs");
 const users = require("./routes/users");
 const albums = require("./routes/albums");
 const ratings = require("./routes/ratings");
@@ -97,7 +96,7 @@ app.use("/auth", auth);
 app.use("/playlists/:playlistId/rating", ratings);
 app.use("/playlists", playlists);
 app.use("/artists", artists);
-app.use("/songs", songsBackup);
+app.use("/songs", songs);
 app.use("/users", users);
 app.use("/albums", albums);
 
