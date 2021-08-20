@@ -25,18 +25,18 @@ class SongCtrl {
       const currentPage = req.query.page;
       const regex = new RegExp(req.query.title, "i");
 
-      const song = await Song.find({ songTitle: { $regex: regex } })
+      const songs = await Song.find({ songTitle: { $regex: regex } })
         .populate({ path: "artistId", model: Artist })
         .select("songTitle songImage artistId tags")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
         .sort("-releaseDate");
 
-      if (song.length === 0) {
+      if (songs.length === 0) {
         return next({ message: "Song not found", statusCode: 404 });
       }
 
-      res.status(200).json({ song });
+      res.status(200).json({ songs });
     } catch (error) {
       next(error);
     }
@@ -50,7 +50,7 @@ class SongCtrl {
 
       const songs = await Song.find({ releaseDate: { $regex: regex } })
         .populate({ path: "artistId", model: Artist })
-        .select("songTitle songImage artistId")
+        .select("songTitle songImage artistId tags")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
         .sort("-releaseDate");
@@ -72,7 +72,7 @@ class SongCtrl {
 
       const songs = await Song.find()
         .populate({ path: "artistId", model: Artist })
-        .select("songTitle songImage artistId")
+        .select("songTitle songImage artistId tags")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
         .sort("songTitle");
