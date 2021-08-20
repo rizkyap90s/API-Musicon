@@ -18,8 +18,6 @@ router.get("/", passport.authenticate("facebook", { scope: "email" }));
 
 router.get("/callback", callbackFacebook, /* success */ getToken);
 
-router.get("/failed", (req, res) =>
-  res.status(401).json({ message: "Login failed" })
-);
+router.get("/failed", (req, res) => res.status(401).json({ message: "Login failed" }));
 
 module.exports = router;

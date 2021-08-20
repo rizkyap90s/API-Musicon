@@ -28,18 +28,24 @@ class Playlists {
     }
   }
 
-  // async removeSong(req, res, next) {
-  //   try {
-  //     const findPlaylist = await Playlist.findOne({ _id: req.params.playlistid });
-  //     // const data = await findPlaylist.songs.filter((song) => song !== req.params.songid);
-  //     const getIndexSong = await findPlaylist.songs.indexOf(req.params.songid);
-  //     const data = await findPlaylist.songs.splice(getIndexSong, 1);
-  //     findPlaylist.updateOne({ _id: req.params.playlistid }, data, { new: true });
-  //     res.status(201).json({ data: findPlaylist.songs });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
+  async removeSong(req, res, next) {
+    try {
+      const findPlaylist = await Playlist.findById(req.params.playlistid);
+      const getIndexSong = findPlaylist.songs.indexOf(req.params.songid);
+
+      findPlaylist.songs.splice(getIndexSong, 1);
+
+      const data = await Playlist.findOneAndUpdate(
+        { _id: req.params.playlistid },
+        { songs: findPlaylist.songs },
+        { new: true }
+      );
+
+      res.status(201).json({ data });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async getAllPlaylists(req, res, next) {
     try {
