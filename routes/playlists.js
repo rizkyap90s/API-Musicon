@@ -26,16 +26,20 @@ const {
 } = require("../controllers/playlists");
 const router = express.Router();
 
-router.post("/", isLoggedIn, uploadImage.single("playlistImage"), addNewPlaylist);
+router.post(
+  "/",
+  isLoggedIn,
+  uploadImage.single("playlistImage"),
+  addNewPlaylist
+);
 
 router.get("/", isLoggedIn, getAllPlaylists);
 router.get("/search", isLoggedIn, getPlaylistByTitle);
 router.get("/:id", isLoggedIn, getPlaylistById);
 router.get("/users/:id", isLoggedIn, getUserPlaylists);
 
-<<<<<<< HEAD
-// router.post("/:id", isLoggedIn, addSong);
-// router.delete("/:playlistid/:songid", isLoggedIn, removeSong);
+router.post("/:playlistid/:songid", isLoggedIn, addSong);
+router.delete("/:playlistid/:songid", isLoggedIn, removeSong);
 
 router.put(
   "/update/:id",
@@ -43,12 +47,6 @@ router.put(
   uploadImage.single("playlistImage"),
   updatePlaylistById
 );
-=======
-router.post("/:playlistid/:songid", isLoggedIn, addSong);
-router.delete("/:playlistid/:songid", isLoggedIn, removeSong);
-
-router.put("/update/:id", isLoggedIn, uploadImage.single("playlistImage"), updatePlaylistById);
->>>>>>> development
 
 router.delete("/:id", isLoggedIn, deletePlaylistById);
 
