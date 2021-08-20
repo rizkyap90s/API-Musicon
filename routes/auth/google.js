@@ -10,15 +10,10 @@ const callbackGoogle = passport.authenticate("google", {
   failureRedirect: "auth/google/failed", // absolute path, not relative router path
 });
 
-router.get(
-  "/",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+router.get("/", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 router.get("/callback", callbackGoogle, getToken);
 
-router.get("/failed", (req, res) =>
-  res.status(401).json({ message: "Login failed" })
-);
+router.get("/failed", (req, res) => res.status(401).json({ message: "Login failed" }));
 
 module.exports = router;

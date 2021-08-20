@@ -19,7 +19,7 @@ const artistSchema = new mongoose.Schema(
     photo: {
       type: String,
       required: false,
-      get: getImage,
+      // get: getImage,
     },
   },
   {
@@ -32,11 +32,11 @@ const artistSchema = new mongoose.Schema(
   }
 );
 
-function getImage(img) {
-  if (!img || img.includes("https") || img.includes("http")) {
-    return img;
-  }
-  return `/images/artists/${img}`;
-}
+// function getImage(img) {
+//   if (!img || img.includes("https") || img.includes("http")) {
+//     return img;
+//   }
+//   return `/images/artists/${img}`;
+// }
 artistSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 module.exports = mongoose.model("artist", artistSchema);

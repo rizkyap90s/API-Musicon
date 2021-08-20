@@ -52,26 +52,24 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
   app.use(morgan("dev"));
 } else {
   // create a write stream (in append mode)
-  let accessLogStream = fs.createWriteStream(
-    path.join(__dirname, "access.log"),
-    {
-      flags: "a",
-    }
-  );
+  let accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
+    flags: "a",
+  });
 
   // setup the logger
   app.use(morgan("combined", { stream: accessLogStream }));
 }
 
 /* Import routes */
-const google = require("./routes/auth/google");
-const facebook = require("./routes/auth/facebook");
+// const google = require("./routes/auth/google");
+// const facebook = require("./routes/auth/facebook");
 const auth = require("./routes/auth/local");
 const playlists = require("./routes/playlists");
 const songs = require("./routes/songs");
 const users = require("./routes/users");
 const albums = require("./routes/albums");
 const ratings = require("./routes/ratings");
+const artists = require("./routes/artists");
 
 /* Import errorHander */
 const errorHandler = require("./middlewares/errorHandler");
@@ -92,11 +90,12 @@ app.use(
 app.use(express.static("public"));
 
 /* Use the routes */
-app.use("/auth/google", google);
-app.use("/auth/facebook", facebook);
+// app.use("/auth/google", google);
+// app.use("/auth/facebook", facebook);
 app.use("/auth", auth);
 app.use("/playlists/:playlistId/rating", ratings);
 app.use("/playlists", playlists);
+app.use("/artists", artists);
 app.use("/songs", songs);
 app.use("/users", users);
 app.use("/albums", albums);

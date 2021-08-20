@@ -14,11 +14,7 @@ const storage = multer.diskStorage({
 });
 const uploadImage = multer({ storage });
 
-const {
-  getUserById,
-  updateDataUserById,
-  updatePasswordUserById,
-} = require("../controllers/users");
+const { getUserById, updateDataUserById, updatePasswordUserById } = require("../controllers/users");
 const {
   getUserByIdValidator,
   updateDataValidator,
@@ -36,11 +32,6 @@ router.put(
   uploadImage.single("photo"),
   updateDataUserById
 );
-router.put(
-  "/updatepassword/:id",
-  isLoggedIn,
-  updatePasswordValidator,
-  updatePasswordUserById
-);
+router.put("/updatepassword/:id", isLoggedIn, updatePasswordValidator, updatePasswordUserById);
 
 module.exports = router;
