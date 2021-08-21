@@ -3,6 +3,7 @@ const { fetchArtists } = require("./artists");
 const { fetchAlbums } = require("./albums");
 const { fetchSongs } = require("./songs");
 const { populate } = require("./populate");
+const { createPlaylist } = require("./playlist");
 const mongoose = require("mongoose");
 
 const add = async function () {
@@ -18,6 +19,7 @@ const add = async function () {
     await fetchAlbums();
     await fetchSongs();
     await populate();
+    await createPlaylist();
 
     mongoose.disconnect();
   } catch (error) {

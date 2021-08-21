@@ -33,10 +33,7 @@ class Playlists {
     try {
       const findPlaylist = await Playlist.findById(req.params.playlistid);
       const getIndexSong = findPlaylist.songs.indexOf(req.params.songid);
-
       findPlaylist.songs.splice(getIndexSong, 1);
-
-      console.log(findPlaylist.songs);
 
       const data = await Playlist.findOneAndUpdate(
         { _id: req.params.playlistid },
