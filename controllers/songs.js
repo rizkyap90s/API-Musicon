@@ -36,7 +36,7 @@ class SongCtrl {
           model: Album,
           select: { _id: 1, albumTitle: 1 },
         })
-        .select("songTitle songImage artistId albumId tags")
+        .select("songTitle songImage songDuration artistId albumId tags")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
         .sort("-releaseDate");
