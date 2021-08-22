@@ -13,9 +13,12 @@ const hpp = require("hpp");
 const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
-const fileUpload = require("express-fileupload");
+const passport = require("passport");
 
 const app = express(); // Make express app
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // CORS
 app.use(cors());
@@ -58,13 +61,15 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
 }
 
 /* Import routes */
-const auth = require("./routes/auth");
+// const google = require("./routes/auth/google");
+// const facebook = require("./routes/auth/facebook");
+const auth = require("./routes/auth/local");
 const playlists = require("./routes/playlists");
-// const songs = require("./routes/songs");
-const songsBackup = require("./routes/songsBackup");
+const songs = require("./routes/songs");
 const users = require("./routes/users");
 const albums = require("./routes/albums");
 const ratings = require("./routes/ratings");
+const artists = require("./routes/artists");
 
 /* Import errorHander */
 const errorHandler = require("./middlewares/errorHandler");
@@ -85,11 +90,13 @@ app.use(
 app.use(express.static("public"));
 
 /* Use the routes */
+// app.use("/auth/google", google);
+// app.use("/auth/facebook", facebook);
 app.use("/auth", auth);
 app.use("/playlists/:playlistId/rating", ratings);
 app.use("/playlists", playlists);
-// app.use("/songs", songs);
-app.use("/songs", songsBackup);
+app.use("/artists", artists);
+app.use("/songs", songs);
 app.use("/users", users);
 app.use("/albums", albums);
 

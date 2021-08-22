@@ -39,6 +39,10 @@ const songSchema = new mongoose.Schema(
       required: true,
       default: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     },
+    tags: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: {

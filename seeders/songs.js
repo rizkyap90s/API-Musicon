@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { token } = require("./utils/token"); // token expires in ~1 hour
-const { Album, Song } = require("../models");
+const { Album, Song, Artist } = require("../models");
 
 const API_PARTIAL = "https://api.spotify.com/v1";
 
@@ -22,7 +22,9 @@ exports.fetchSongs = async function () {
         }
       );
 
-      const albumMongo = await Album.find({ spotifyId: albumIds[album] });
+      const albumMongo = await Album.find({
+        spotifyId: albumIds[album],
+      }).populate({ path: "artistId", model: Artist });
 
       for (let i = 0; i < response.data.items.length; i++) {
         const sanitizedResponse = {
@@ -33,6 +35,7 @@ exports.fetchSongs = async function () {
           albumId: albumMongo[0]._id,
           artistId: albumMongo[0].artistId,
           audio: response.data.items[i].uri,
+          tags: `${response.data.items[i].name}, ${albumMongo[0].albumTitle}, ${albumMongo[0].artistId.name}`,
         };
 
         await Song.create(sanitizedResponse);

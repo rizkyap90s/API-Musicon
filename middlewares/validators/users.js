@@ -36,7 +36,6 @@ exports.updateDataValidator = async (req, res, next) => {
 
 exports.updatePasswordValidator = async (req, res, next) => {
   try {
-    // console.log(typeof req.body.newPassword);
     if (!validator.isStrongPassword(req.body.newPassword)) {
       return next({ messages: "your password is not strong enough", statusCode: 400 });
     }
