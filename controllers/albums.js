@@ -17,7 +17,7 @@ class AlbumCtrl {
         .sort("-releaseDate");
 
       if (albums.length === 0) {
-        return next({ message: "Album not found", statusCode: 404 });
+        return next({ message: "Album not found.", statusCode: 404 });
       }
 
       res.status(200).json({ albums });
@@ -40,7 +40,7 @@ class AlbumCtrl {
         .sort("-releaseDate");
 
       if (album.length === 0) {
-        return next({ message: "Album not found", statusCode: 404 });
+        return next({ message: "Album not found.", statusCode: 404 });
       }
 
       res.status(200).json({ album });
