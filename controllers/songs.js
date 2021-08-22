@@ -10,7 +10,7 @@ class SongCtrl {
       });
 
       if (!data) {
-        return next({ message: "Song not found", statusCode: 404 });
+        return next({ message: "Song not found.", statusCode: 404 });
       }
 
       res.status(200).json({ data });
@@ -42,7 +42,7 @@ class SongCtrl {
         .sort("-releaseDate");
 
       if (songs.length === 0) {
-        return next({ message: "Song not found", statusCode: 404 });
+        return next({ message: "Song not found.", statusCode: 404 });
       }
 
       res.status(200).json({ songs });
@@ -65,7 +65,7 @@ class SongCtrl {
         .sort("-releaseDate");
 
       if (songs.length === 0) {
-        return next({ message: "Song not found", statusCode: 404 });
+        return next({ message: "Song not found.", statusCode: 404 });
       }
 
       res.status(200).json({ songs });
@@ -87,7 +87,7 @@ class SongCtrl {
         .sort("songTitle");
 
       if (songs.length === 0) {
-        return next({ message: "Song not found", statusCode: 404 });
+        return next({ message: "Song not found.", statusCode: 404 });
       }
 
       res.status(200).json({ songs });
