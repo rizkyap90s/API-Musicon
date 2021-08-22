@@ -23,11 +23,15 @@ class Users {
       if (req.file) {
         req.body.photo = "/" + req.file.path.split("/").slice(1).join("/");
       }
-      const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
-        new: true,
-      }).select("-password -__v");
+      const data = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        {
+          new: true,
+        }
+      ).select("-password -__v");
       if (!data) {
-        return next({ message: "data not found", statusCode: 404 });
+        return next({ message: "User not found.", statusCode: 404 });
       }
       res.status(201).json({ data });
     } catch (error) {
@@ -37,8 +41,10 @@ class Users {
   async updatePasswordUserById(req, res, next) {
     try {
       req.body.password = req.body.newPassword;
-      await User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
-      res.status(201).json({ message: `password has been changed` });
+      await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,
+      });
+      res.status(201).json({ message: `Password has been changed.` });
     } catch (error) {
       next(error);
     }

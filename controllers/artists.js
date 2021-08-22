@@ -25,7 +25,7 @@ class Artists {
         .sort("-releaseDate");
 
       if (artist.length === 0) {
-        return next({ message: "Artist not found", statusCode: 404 });
+        return next({ message: "Artist not found.", statusCode: 404 });
       }
 
       res.status(200).json({ artist });
