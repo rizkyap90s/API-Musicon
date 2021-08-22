@@ -1,5 +1,4 @@
-const { Artist, Album } = require("../models");
-const artist = require("../models/artist");
+const { Artist, Playlist, Album } = require("../models");
 
 class Artists {
   async getArtistById(req, res, next) {
@@ -35,28 +34,11 @@ class Artists {
   }
   async getNewReleaseArtist(req, res, next) {
     try {
-      const pageSize = parseInt(req.query.limit) || 15;
-      const currentPage = req.query.page;
-
-      const albums = await Album.find({
-        releaseDate: { $regex: new RegExp("^202[01].*") },
-      })
-        .populate({ path: "artistId", model: Artist })
-        .select("albumTitle releaseDate albumImage artistId")
-        .skip(pageSize * (currentPage - 1))
-        .limit(pageSize)
-        .sort("-releaseDate");
-
-      if (albums.length === 0) {
-        return next({ message: "Album not found", statusCode: 404 });
-      }
-      const data = [];
-      for (let i = 0; i < albums.length; i++) {
-        const getArtist = await Artist.find({ _id: albums[i].artistId });
-        data.push(getArtist);
-      }
-
-      res.status(200).json({ data });
+      const getArtists = await Artist.find().populate("albums");
+      const newRelease = getArtists.filter(
+        (artist) => artist.albums[0].releaseDate.slice(0, 3) === "202"
+      );
+      res.status(200).json({ newRelease });
     } catch (error) {
       next(error);
     }

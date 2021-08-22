@@ -7,15 +7,16 @@ const createPlaylist = async function () {
   try {
     const getSong = await Song.find();
     for (let i = 0; i < 3; i++) {
+      const fullname = faker.name.findName();
       const newUser = await User.create({
-        username: faker.internet.userName(),
-        fullname: faker.name.findName(),
+        fullname: fullname,
+        username: fullname.split(" ")[0] + Math.floor(Math.random() * 1000),
         email: faker.internet.email(),
         password: "Kiki123!",
       });
       for (let j = 0; j < 5; j++) {
         const newPlaylist = await Playlist.create({
-          playlistTitle: `${newUser.fullname}'s ${faker.commerce.productAdjective()} Playlist`,
+          playlistTitle: `${newUser.username}'s ${faker.commerce.productAdjective()} Playlist`,
           playlistImage: faker.image.imageUrl(),
           description: faker.lorem.words(),
           author: newUser._id,
