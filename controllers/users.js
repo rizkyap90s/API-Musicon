@@ -43,6 +43,13 @@ class Users {
       next(error);
     }
   }
+
+  async userTopSong(req, res, next) {
+    try {
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new Users();
