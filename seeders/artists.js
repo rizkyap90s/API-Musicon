@@ -9,14 +9,11 @@ exports.fetchArtists = async function () {
   try {
     await Artist.deleteMany(); // delete all previous entries
     for (artist in dumps.artists) {
-      const response = await axios.get(
-        `${API_PARTIAL}/artists/${dumps.artists[artist]}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${API_PARTIAL}/artists/${dumps.artists[artist]}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       await Artist.create({
         name: response.data.name,

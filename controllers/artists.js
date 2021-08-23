@@ -1,9 +1,9 @@
-const { Artist } = require("../models");
+const { Artist, Playlist, Album } = require("../models");
 
 class Artists {
   async getArtistById(req, res, next) {
     try {
-      const data = await Artist.findOne({ _id: req.params.id });
+      const data = await Artist.findById(req.params.id).populate("albums");
       res.status(200).json({ data });
     } catch (error) {
       next(error);
@@ -28,6 +28,17 @@ class Artists {
       }
 
       res.status(200).json({ artist });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getNewReleaseArtist(req, res, next) {
+    try {
+      const getArtists = await Artist.find().populate("albums");
+      const newRelease = getArtists.filter(
+        (artist) => artist.albums[0].releaseDate.slice(0, 3) === "202"
+      );
+      res.status(200).json({ newRelease });
     } catch (error) {
       next(error);
     }

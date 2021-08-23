@@ -18,7 +18,6 @@ exports.register = (req, res, next) => {
     }
 
     req.user = user;
-    console.log(req.body);
 
     next();
   })(req, res, next);
@@ -77,7 +76,6 @@ passport.use(
 
 // Logic to login
 exports.login = (req, res, next) => {
-  console.log(req.body.username);
   if (validator.isEmail(req.body.username)) {
     passport.authenticate(
       "loginEmail",

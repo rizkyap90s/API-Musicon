@@ -14,7 +14,13 @@ const storage = multer.diskStorage({
 });
 const uploadImage = multer({ storage });
 
-const { getUserById, updateDataUserById, updatePasswordUserById } = require("../controllers/users");
+const {
+  getUserById,
+  updateDataUserById,
+  updatePasswordUserById,
+  userTopSongs,
+  userTopArtist,
+} = require("../controllers/users");
 const {
   getUserByIdValidator,
   updateDataValidator,
@@ -24,6 +30,8 @@ const { isLoggedIn } = require("../middlewares/auth/local");
 
 const router = express.Router();
 
+router.get("/:id/topsongs", isLoggedIn, userTopSongs);
+router.get("/:id/topartists", isLoggedIn, userTopArtist);
 router.get("/:id", isLoggedIn, getUserByIdValidator, getUserById);
 router.put(
   "/updatedata/:id",

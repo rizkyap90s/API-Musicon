@@ -24,6 +24,11 @@ const {
   addSong,
   removeSong,
 } = require("../controllers/playlists");
+const {
+  getPlaylistByIdValidator,
+  addAndRemoveSongValidator,
+  deletePlaylistValidator,
+} = require("../middlewares/validators/playlists");
 const router = express.Router();
 
 router.post(
@@ -35,11 +40,11 @@ router.post(
 
 router.get("/", isLoggedIn, getAllPlaylists);
 router.get("/search", isLoggedIn, getPlaylistByTitle);
-router.get("/:id", isLoggedIn, getPlaylistById);
-router.get("/users/:id", isLoggedIn, getUserPlaylists);
+router.get("/:id", isLoggedIn, getPlaylistByIdValidator, getPlaylistById);
+router.get("/users/:id", isLoggedIn, getPlaylistByIdValidator, getUserPlaylists);
 
-router.post("/:playlistid/:songid", isLoggedIn, addSong);
-router.delete("/:playlistid/:songid", isLoggedIn, removeSong);
+router.post("/:playlistid/:songid", isLoggedIn, addAndRemoveSongValidator, addSong);
+router.delete("/:playlistid/:songid", isLoggedIn, addAndRemoveSongValidator, removeSong);
 
 router.put(
   "/update/:id",
@@ -48,6 +53,6 @@ router.put(
   updatePlaylistById
 );
 
-router.delete("/:id", isLoggedIn, deletePlaylistById);
+router.delete("/:id", isLoggedIn, deletePlaylistValidator, deletePlaylistById);
 
 module.exports = router;
