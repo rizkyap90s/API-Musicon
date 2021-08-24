@@ -6,9 +6,9 @@ class Users {
   async getUserById(req, res, next) {
     try {
       const data = await User.findOne({ _id: req.params.id })
-        .populate("playlists")
+        .populate({ path: "playlists", model: Playlist })
         .select("-password -__v");
-
+      data.playlists = data.playlists.map((playlist) => playlist._id);
       data._doc.total = data.playlists.length;
       res.status(200).json({ data });
     } catch (error) {
@@ -21,9 +21,13 @@ class Users {
       if (req.file) {
         req.body.photo = "/" + req.file.path.split("/").slice(1).join("/");
       }
-      const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
-        new: true,
-      }).select("-password -__v");
+      const data = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        {
+          new: true,
+        }
+      ).select("-password -__v");
       if (!data) {
         return next({ message: "User not found.", statusCode: 404 });
       }
