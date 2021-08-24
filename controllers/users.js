@@ -9,7 +9,7 @@ class Users {
         .populate({ path: "playlists", model: Playlist })
         .select("-password -__v");
       data.playlists = data.playlists.map((playlist) => playlist._id);
-      data._doc.total = data.playlists.length;
+      data._doc.playlistCreated = data.playlists.length;
       res.status(200).json({ data });
     } catch (error) {
       next(error);
