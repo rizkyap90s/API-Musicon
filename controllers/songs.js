@@ -51,6 +51,38 @@ class SongCtrl {
     }
   }
 
+  async getSongByTag(req, res, next) {
+    try {
+      const pageSize = parseInt(req.query.limit) || 15;
+      const currentPage = req.query.page;
+      const regex = new RegExp(req.query.tag, "i");
+
+      const songs = await Song.find({ tags: { $regex: regex } })
+        .populate({
+          path: "artistId",
+          model: Artist,
+          select: { _id: 1, name: 1, photo: 1 },
+        })
+        .populate({
+          path: "albumId",
+          model: Album,
+          select: { _id: 1, albumTitle: 1 },
+        })
+        .select("songTitle songImage songDuration artistId albumId tags")
+        .skip(pageSize * (currentPage - 1))
+        .limit(pageSize)
+        .sort("-releaseDate");
+
+      if (songs.length === 0) {
+        return next({ message: "Song not found.", statusCode: 404 });
+      }
+
+      res.status(200).json({ songs });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async getNewReleases(req, res, next) {
     try {
       const pageSize = parseInt(req.query.limit) || 15;

@@ -6,10 +6,10 @@ class Users {
   async getUserById(req, res, next) {
     try {
       const data = await User.findOne({ _id: req.params.id })
-        .populate("playlists")
+        .populate({ path: "playlists", model: Playlist })
         .select("-password -__v");
-
-      data._doc.total = data.playlists.length;
+      data.playlists = data.playlists.map((playlist) => playlist._id);
+      data._doc.playlistCreated = data.playlists.length;
       res.status(200).json({ data });
     } catch (error) {
       next(error);
@@ -57,7 +57,8 @@ class Users {
         }
       }
       const songs = await Song.find({ _id: { $in: [...topSongs] } })
-        .select("songTitle songImage")
+        .populate({ path: "artistId", model: Artist, select: { name: 1, photo: 1 } })
+        .select("songTitle songImage artistId songDuration")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize);
 

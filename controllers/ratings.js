@@ -2,36 +2,49 @@
 const { Rating } = require("../models");
 
 class RatingCtrl {
-  async addRating(req, res, next) {
+  async getRating(req, res, next) {
     try {
-      const data = {
-        rating: req.body.rating,
+      const data = await Rating.findOne({
         playlistId: req.params.playlistId,
         authorId: req.user.user,
-      };
+      }).select("rating");
 
-      await Rating.create(data);
-      res.status(201).json({ message: "Rating added." });
+      if (!data) {
+        res.status(200).json({ rating: null });
+      } else {
+        res.status(200).json({ rating: data.rating });
+      }
     } catch (error) {
       next(error);
     }
   }
-  async updateRating(req, res, next) {
+
+  async createOrUpdateRating(req, res, next) {
     try {
-      const data = {
-        rating: req.body.rating,
+      const data = await Rating.findOne({
         playlistId: req.params.playlistId,
         authorId: req.user.user,
-      };
+      });
 
-      let rating = await Rating.findById(req.params.id);
+      if (data) {
+        const updateRating = await Rating.findOneAndUpdate(
+          {
+            playlistId: req.params.playlistId,
+            authorId: req.user.user,
+          },
+          req.body,
+          {
+            new: true,
+          }
+        );
+        updateRating.save();
+      } else {
+        req.body.playlistId = req.params.playlistId;
+        req.body.authorId = req.user.user;
+        await Rating.create(req.body);
+      }
 
-      await Rating.updateOne({ _id: req.params.id }, req.body);
-
-      // If success
-      await rating.save();
-
-      res.status(200).json({ message: "Rating updated." });
+      res.status(201).json({ message: "Rating is added/ updated." });
     } catch (error) {
       next(error);
     }
