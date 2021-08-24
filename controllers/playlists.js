@@ -6,8 +6,7 @@ class Playlists {
   async addNewPlaylist(req, res, next) {
     try {
       if (req.file) {
-        req.body.playlistImage =
-          "/" + req.file.path.split("/").slice(1).join("/");
+        req.body.playlistImage = "/" + req.file.path.split("/").slice(1).join("/");
       }
       req.body.author = ObjectId(req.user.user);
       // req.body.songs = req.body.songs.split(", ").map((song) => ObjectId(song));
@@ -59,8 +58,13 @@ class Playlists {
 
   async getUserPlaylists(req, res, next) {
     try {
-      const data = await Playlist.find({ author: req.params.id });
-      res.status(200).json({ data });
+      const getAllPlaylist = await Playlist.find({ author: req.params.id });
+      // for (const playlist of getAllPlaylist) {
+      //   console.log(playlist);
+      //   for (const songs of playlist.songs) {
+      //   }
+      // }
+      res.status(200).json({ data: getAllPlaylist });
     } catch (error) {
       next(error);
     }
@@ -116,8 +120,7 @@ class Playlists {
   async updatePlaylistById(req, res, next) {
     try {
       if (req.file) {
-        req.body.playlistImage =
-          "/" + req.file.path.split("/").slice(1).join("/");
+        req.body.playlistImage = "/" + req.file.path.split("/").slice(1).join("/");
       }
       req.body.author = ObjectId(req.user.user);
       await Playlist.findOneAndUpdate({ _id: req.params.id }, req.body, {
@@ -132,8 +135,7 @@ class Playlists {
   async deletePlaylistById(req, res, next) {
     try {
       const getPlaylist = await Playlist.findOne({ _id: req.params.id });
-      if (!getPlaylist)
-        return next({ statusCode: 404, message: "Playlist not found." });
+      if (!getPlaylist) return next({ statusCode: 404, message: "Playlist not found." });
       if (getPlaylist.author != req.user.user) {
         return next({ statusCode: 403, message: "Access denied." });
       }

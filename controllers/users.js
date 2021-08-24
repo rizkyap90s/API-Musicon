@@ -21,13 +21,9 @@ class Users {
       if (req.file) {
         req.body.photo = "/" + req.file.path.split("/").slice(1).join("/");
       }
-      const data = await User.findOneAndUpdate(
-        { _id: req.params.id },
-        req.body,
-        {
-          new: true,
-        }
-      ).select("-password -__v");
+      const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,
+      }).select("-password -__v");
       if (!data) {
         return next({ message: "User not found.", statusCode: 404 });
       }
@@ -61,7 +57,8 @@ class Users {
         }
       }
       const songs = await Song.find({ _id: { $in: [...topSongs] } })
-        .select("songTitle songImage")
+        .populate({ path: "artistId", model: Artist, select: { name: 1, photo: 1 } })
+        .select("songTitle songImage artistId songDuration")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize);
 
