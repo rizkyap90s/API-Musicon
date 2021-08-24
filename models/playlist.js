@@ -22,9 +22,9 @@ const playlistSchema = new mongoose.Schema(
       ref: "User",
     },
     playlistDuration: {
-      type: String,
+      type: Number,
       required: false,
-      default: "6969",
+      default: 0,
     },
     playlistImage: {
       type: String,

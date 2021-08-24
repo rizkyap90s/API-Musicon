@@ -26,9 +26,9 @@ const albumSchema = new mongoose.Schema(
       ref: "Artist",
     },
     albumDuration: {
-      type: String,
+      type: Number,
       required: true,
-      default: "6969",
+      default: 0,
     },
     albumImage: {
       type: String,

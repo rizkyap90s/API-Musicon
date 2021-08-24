@@ -25,9 +25,9 @@ const songSchema = new mongoose.Schema(
       ref: "Album",
     },
     songDuration: {
-      type: String,
+      type: Number,
       required: true,
-      default: "69",
+      default: 0,
     },
     songImage: {
       type: String,

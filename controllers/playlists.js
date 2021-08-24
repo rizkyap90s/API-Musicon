@@ -59,11 +59,6 @@ class Playlists {
   async getUserPlaylists(req, res, next) {
     try {
       const getAllPlaylist = await Playlist.find({ author: req.params.id });
-      // for (const playlist of getAllPlaylist) {
-      //   console.log(playlist);
-      //   for (const songs of playlist.songs) {
-      //   }
-      // }
       res.status(200).json({ data: getAllPlaylist });
     } catch (error) {
       next(error);
@@ -88,6 +83,14 @@ class Playlists {
           model: User,
           select: { _id: 1, username: 1, fullname: 1 },
         });
+
+      const allSongsDuration = [];
+      for (let i = 0; i < data.songs.length; i++) {
+        allSongsDuration.push(data.songs[i].songDuration);
+      }
+      const playlistDuration = allSongsDuration.reduce((total, index) => total + index);
+      data.playlistDuration = playlistDuration;
+
       res.status(200).json({ data });
     } catch (error) {
       next(error);
