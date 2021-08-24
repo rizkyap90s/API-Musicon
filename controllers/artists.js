@@ -17,8 +17,6 @@ class Artists {
       const regex = new RegExp(getName, "i");
 
       const artist = await Artist.find({ name: { $regex: regex } })
-        // .populate({ path: "author", model: User })
-        // .select("playlistTitle playlistImage author")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
         .sort("-releaseDate");

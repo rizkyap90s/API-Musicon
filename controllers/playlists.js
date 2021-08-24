@@ -9,7 +9,6 @@ class Playlists {
         req.body.playlistImage = "/" + req.file.path.split("/").slice(1).join("/");
       }
       req.body.author = ObjectId(req.user.user);
-      // req.body.songs = req.body.songs.split(", ").map((song) => ObjectId(song));
       await Playlist.create(req.body);
       res.status(201).json({ message: "Playlist created." });
     } catch (error) {
@@ -83,7 +82,6 @@ class Playlists {
           model: User,
           select: { _id: 1, username: 1, fullname: 1 },
         });
-
       const allSongsDuration = [];
       for (let i = 0; i < data.songs.length; i++) {
         allSongsDuration.push(data.songs[i].songDuration);
@@ -104,7 +102,6 @@ class Playlists {
       const regex = new RegExp(getTitle, "i");
 
       const playlist = await Playlist.find({ playlistTitle: { $regex: regex } })
-        // .populate({ path: "author", model: User })
         .select("playlistTitle playlistImage author")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
