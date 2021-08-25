@@ -110,8 +110,6 @@ describe("Get New Releases Artist", () => {
       .get("/artists/new")
       .set("Authorization", `Bearer ${userToken}`);
 
-    console.log(response.body);
-
     expect(response.statusCode).toEqual(200);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty("newRelease");
