@@ -29,6 +29,9 @@ beforeAll(async () => {
     artistId: artistTest._id,
   });
 
+  artistTest.albums.push(albumTest._id);
+  await artistTest.save();
+
   const songTest = await Song.create({
     songTitle: "songtest",
     artistId: artistTest._id,

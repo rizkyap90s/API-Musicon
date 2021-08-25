@@ -32,18 +32,18 @@ class AlbumCtrl {
       const currentPage = req.query.page;
       const regex = new RegExp(getTitle, "i");
 
-      const album = await Album.find({ albumTitle: { $regex: regex } })
+      const albums = await Album.find({ albumTitle: { $regex: regex } })
         .populate({ path: "artistId", model: Artist })
         .select("albumTitle albumImage artistId")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
         .sort("-releaseDate");
 
-      if (album.length === 0) {
+      if (albums.length === 0) {
         return next({ message: "Album not found.", statusCode: 404 });
       }
 
-      res.status(200).json({ album });
+      res.status(200).json({ albums });
     } catch (error) {
       next(error);
     }
