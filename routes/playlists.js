@@ -41,6 +41,9 @@ router.get("/users/:id", isLoggedIn, getPlaylistByIdValidator, getUserPlaylists)
 router.post("/:playlistid/:songid", isLoggedIn, addAndRemoveSongValidator, addSong);
 router.delete("/:playlistid/:songid", isLoggedIn, addAndRemoveSongValidator, removeSong);
 
+router.post("/:playlistid/:songid", isLoggedIn, addSong);
+router.delete("/:playlistid/:songid", isLoggedIn, removeSong);
+
 router.put("/update/:id", isLoggedIn, uploadImage.single("playlistImage"), updatePlaylistById);
 
 router.delete("/:id", isLoggedIn, deletePlaylistValidator, deletePlaylistById);
