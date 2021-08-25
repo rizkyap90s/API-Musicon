@@ -8,10 +8,15 @@ let userToken = "";
 let songId = "";
 
 beforeAll(async () => {
+  await Song.deleteMany();
+  await Album.deleteMany();
+  await Artist.deleteMany();
+  await User.deleteMany();
+
   const userTest = await User.create({
-    username: "usertest",
-    fullname: "User Test",
-    email: "usertest@dummy.com",
+    username: "usertestsongs",
+    fullname: "User Test Songs",
+    email: "usertestsongs@dummy.com",
     password: "Str0ngp@ssword",
   });
 
@@ -34,6 +39,10 @@ beforeAll(async () => {
 
   songId = songTest._id;
   userToken = jwt.sign({ user: userTest._id }, process.env.JWT_SECRET);
+});
+
+afterAll(() => {
+  mongoose.disconnect();
 });
 
 describe("Get Songs by Title", () => {
@@ -128,8 +137,6 @@ describe("Get Songs by Tag", () => {
       .query({ tag: "monkeywrench", limit: 3 })
       .set("Authorization", `Bearer ${userToken}`);
 
-    console.log(response);
-
     expect(response.statusCode).toEqual(404);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty("errors");
@@ -174,12 +181,4 @@ describe("Get Recommended Songs", () => {
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty("errors");
   });
-});
-
-afterAll(async () => {
-  await Song.deleteMany(),
-    await Album.deleteMany(),
-    await Artist.deleteMany(),
-    await User.deleteMany(),
-    mongoose.disconnect();
 });
