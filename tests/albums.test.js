@@ -29,6 +29,9 @@ beforeAll(async () => {
     releaseDate: "2021",
   });
 
+  artistTest.albums.push(albumTest._id);
+  await artistTest.save();
+
   albumId = albumTest._id;
 
   userToken = jwt.sign({ user: userTest._id }, process.env.JWT_SECRET);
