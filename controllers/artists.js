@@ -32,10 +32,16 @@ class Artists {
   }
   async getNewReleaseArtist(req, res, next) {
     try {
-      const getArtists = await Artist.find().populate("albums");
+      const getArtists = await Artist.find().populate({
+        path: "albums",
+        model: Album,
+      });
+
       const newRelease = getArtists.filter(
         (artist) => artist.albums[0].releaseDate.slice(0, 3) === "202"
       );
+
+      console.log(newRelease);
       res.status(200).json({ newRelease });
     } catch (error) {
       next(error);
