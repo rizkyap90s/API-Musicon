@@ -16,12 +16,16 @@ const {
   getRecommended,
 } = require("../controllers/songs");
 
+const { getLike, createOrUpdateLike } = require("../controllers/likes");
+
 const router = express.Router();
 
-router.route("/search_tags").get(isLoggedIn, queryValidator, getSongByTag);
-router.route("/search").get(isLoggedIn, queryValidator, getSongByTitle);
-router.route("/new").get(isLoggedIn, queryValidator, getNewReleases);
-router.route("/recommended").get(isLoggedIn, queryValidator, getRecommended);
-router.route("/:id").get(isLoggedIn, getDetailValidator, getDetailSong);
+router.get("/search_tags", isLoggedIn, queryValidator, getSongByTag);
+router.get("/search", isLoggedIn, queryValidator, getSongByTitle);
+router.get("/new", isLoggedIn, queryValidator, getNewReleases);
+router.get("/recommended", isLoggedIn, queryValidator, getRecommended);
+router.get("/:id/like", isLoggedIn, getLike);
+router.post("/:id/like", isLoggedIn, createOrUpdateLike);
+router.get("/:id", isLoggedIn, getDetailValidator, getDetailSong);
 
 module.exports = router;
