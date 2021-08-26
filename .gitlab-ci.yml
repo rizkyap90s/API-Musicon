@@ -21,6 +21,9 @@ stages:
 #     - echo "FACEBOOK_CLIENT_ID"=$FACEBOOK_CLIENT_ID >> .env.test
 #     - echo "FACEBOOK_CLIENT_SECRET"=$FACEBOOK_CLIENT_SECRET >> .env.test
 #     - echo "FACEBOOK_CALLBACK_URL"=$FACEBOOK_CALLBACK_URL >> .env.test
+#     - echo "SPOTIFY_CLIENT_ID"=$SPOTIFY_CLIENT_ID >> .env.test
+#     - echo "SPOTIFY_CLIENT_SECRET"=$SPOTIFY_CLIENT_SECRET >> .env.test
+#     - echo "SPOTIFY_REDIRECT_URI"=$SPOTIFY_REDIRECT_URI >> .env.test
 #     - npm i
 #     - npm run test
 #   # Defines the names of branches and tags the job runs for
@@ -47,6 +50,10 @@ deploy:
     - echo "FACEBOOK_CLIENT_ID"=$FACEBOOK_CLIENT_ID >> .env.production
     - echo "FACEBOOK_CLIENT_SECRET"=$FACEBOOK_CLIENT_SECRET >> .env.production
     - echo "FACEBOOK_CALLBACK_URL"=$FACEBOOK_CALLBACK_URL >> .env.production
+    - echo "FACEBOOK_CALLBACK_URL"=$FACEBOOK_CALLBACK_URL >> .env.test
+    - echo "SPOTIFY_CLIENT_ID"=$SPOTIFY_CLIENT_ID >> .env.test
+    - echo "SPOTIFY_CLIENT_SECRET"=$SPOTIFY_CLIENT_SECRET >> .env.test
+    - echo "SPOTIFY_REDIRECT_URI"=$SPOTIFY_REDIRECT_URI >> .env.test
     - npm i --only=prod
     # Restart NodeJS service
     - npm run stop || true
