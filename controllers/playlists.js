@@ -86,7 +86,7 @@ class Playlists {
       for (let i = 0; i < data.songs.length; i++) {
         allSongsDuration.push(data.songs[i].songDuration);
       }
-      const playlistDuration = allSongsDuration.reduce((total, index) => total + index);
+      const playlistDuration = allSongsDuration.reduce((total, index) => total + index, 0);
       data.playlistDuration = playlistDuration;
 
       res.status(200).json({ data });
@@ -126,7 +126,7 @@ class Playlists {
       await Playlist.findOneAndUpdate({ _id: req.params.id }, req.body, {
         new: true,
       });
-      res.status(200).json({ message: "Playlist updated." });
+      res.status(201).json({ message: "Playlist updated." });
     } catch (error) {
       next(error);
     }
