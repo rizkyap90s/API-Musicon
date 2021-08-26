@@ -21,9 +21,9 @@ const {
 const router = express.Router();
 
 // Make some routes
-router.route("/new").get(isLoggedIn, getNewAlbums);
-router.route("/search").get(isLoggedIn, queryValidator, getAlbumByTitle);
-router.route("/:id").get(isLoggedIn, getDetailValidator, getDetailAlbum);
+router.get("/new", isLoggedIn, getNewAlbums);
+router.get("/search", isLoggedIn, queryValidator, getAlbumByTitle);
+router.get("/:id", isLoggedIn, getDetailValidator, getDetailAlbum);
 
 // Exports
 module.exports = router;
