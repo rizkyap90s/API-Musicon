@@ -1,5 +1,6 @@
 // Adib's Code
 const { Song, Artist, Album } = require("../models");
+const lyricsFinder = require("lyrics-finder");
 
 class SongCtrl {
   async getDetailSong(req, res, next) {
@@ -123,6 +124,25 @@ class SongCtrl {
       }
 
       res.status(200).json({ songs });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getLyrics(req, res, next) {
+    try {
+      const song = await Song.findById(req.params.id)
+        .populate({
+          path: "artistId",
+          model: Artist,
+          select: "name",
+        })
+        .select("songTitle");
+      const lyrics = await lyricsFinder(song.artistId.name, song.songTitle);
+      if (!lyrics) {
+        return next({ message: "Lyrics not found.", statusCode: 404 });
+      }
+      res.status(200).json({ lyrics });
     } catch (error) {
       next(error);
     }
