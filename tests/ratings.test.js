@@ -4,34 +4,36 @@ const jwt = require("jsonwebtoken");
 const app = require("../app");
 const mongoose = require("mongoose");
 const { User, Playlist, Rating } = require("../models");
+const faker = require("faker");
+
 let userToken = "";
 let otherUserToken = "";
 let playlistId = "";
 
 beforeAll(async () => {
-  await Rating.deleteMany();
-  await Playlist.deleteMany();
-  await User.deleteMany();
+  // await Rating.deleteMany();
+  // await Playlist.deleteMany();
+  // await User.deleteMany();
 
   const userTest = await User.create({
-    username: "usertest",
-    fullname: "User Test",
-    email: "usertest@dummy.com",
-    password: "Str0ngp@ssword",
+    username: faker.internet.userName() + Math.floor(Math.random() * 1000),
+    fullname: faker.name.findName(),
+    email: Math.floor(Math.random() * 1000) + faker.internet.email(),
+    password: "Kiki123!",
   });
 
   const otherUserTest = await User.create({
-    username: "otherusertest",
-    fullname: "Other User Test",
-    email: "otherusertest@dummy.com",
-    password: "Str0ngp@ssword",
+    username: faker.internet.userName() + Math.floor(Math.random() * 1000),
+    fullname: faker.name.findName(),
+    email: Math.floor(Math.random() * 1000) + faker.internet.email(),
+    password: "Kiki123!",
   });
 
   const authorTest = await User.create({
-    username: "authortest",
-    fullname: "Author Test",
-    email: "authortest@dummy.com",
-    password: "Str0ngp@ssword",
+    username: faker.internet.userName() + Math.floor(Math.random() * 1000),
+    fullname: faker.name.findName(),
+    email: Math.floor(Math.random() * 1000) + faker.internet.email(),
+    password: "Kiki123!",
   });
 
   const playlistTest = await Playlist.create({
@@ -48,10 +50,7 @@ beforeAll(async () => {
   playlistId = playlistTest._id;
 
   userToken = jwt.sign({ user: userTest._id }, process.env.JWT_SECRET);
-  otherUserToken = jwt.sign(
-    { user: otherUserTest._id },
-    process.env.JWT_SECRET
-  );
+  otherUserToken = jwt.sign({ user: otherUserTest._id }, process.env.JWT_SECRET);
 });
 
 afterAll(() => {
@@ -128,11 +127,9 @@ describe("Set Rating", () => {
   });
 
   it("Missing authorization header", async () => {
-    const response = await request(app)
-      .post(`/playlists/${playlistId}/rating`)
-      .send({
-        rating: "3",
-      });
+    const response = await request(app).post(`/playlists/${playlistId}/rating`).send({
+      rating: "3",
+    });
 
     expect(response.statusCode).toEqual(401);
     expect(response.body).toBeInstanceOf(Object);

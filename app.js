@@ -105,6 +105,7 @@ app.use("/albums", albums);
 /* If route not found */
 app.all("*", (req, res, next) => {
   try {
+    /* istanbul ignore next */
     next({ message: "Endpoint not found", statusCode: 404 });
   } catch (error) {
     /* istanbul ignore next */

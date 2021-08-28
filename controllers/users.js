@@ -12,6 +12,7 @@ class Users {
       data._doc.playlistCreated = data.playlists.length;
       res.status(200).json({ data });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -29,6 +30,7 @@ class Users {
       }
       res.status(201).json({ data });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -40,6 +42,7 @@ class Users {
       });
       res.status(201).json({ message: `Password has been changed.` });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -64,6 +67,7 @@ class Users {
 
       res.status(200).json({ songs });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -95,6 +99,7 @@ class Users {
 
       res.status(200).json({ artists });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }

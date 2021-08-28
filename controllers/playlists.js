@@ -12,6 +12,7 @@ class Playlists {
       await Playlist.create(req.body);
       res.status(201).json({ message: "Playlist created." });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -24,6 +25,7 @@ class Playlists {
 
       res.status(201).json({ data: findPlaylist });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -42,6 +44,7 @@ class Playlists {
 
       res.status(201).json({ data });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -51,6 +54,7 @@ class Playlists {
       const data = await Playlist.find().populate("author");
       res.status(200).json({ data });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -91,6 +95,7 @@ class Playlists {
 
       res.status(200).json({ data });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -113,6 +118,7 @@ class Playlists {
 
       res.status(200).json({ playlist });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -128,6 +134,7 @@ class Playlists {
       });
       res.status(201).json({ message: "Playlist updated." });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -142,6 +149,7 @@ class Playlists {
       await Playlist.deleteOne({ _id: req.params.id });
       res.status(201).json({ message: "Playlist deleted." });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }

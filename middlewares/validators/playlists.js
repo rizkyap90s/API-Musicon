@@ -7,6 +7,7 @@ exports.getPlaylistByIdValidator = async (req, res, next) => {
     }
     next();
   } catch (error) {
+    /* istanbul ignore next */
     next(error);
   }
 };
@@ -21,6 +22,7 @@ exports.addAndRemoveSongValidator = async (req, res, next) => {
     if (!isSongExist) return next({ message: "Song not found", statusCode: 400 });
     next();
   } catch (error) {
+    /* istanbul ignore next */
     next(error);
   }
 };
@@ -33,6 +35,7 @@ exports.deletePlaylistValidator = async (req, res, next) => {
     if (!isPlaylistExist) return next({ message: "Playlist not found", statusCode: 400 });
     next();
   } catch (error) {
+    /* istanbul ignore next */
     next(error);
   }
 };

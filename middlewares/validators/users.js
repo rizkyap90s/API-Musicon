@@ -11,6 +11,7 @@ exports.getUserByIdValidator = async (req, res, next) => {
     }
     next();
   } catch (error) {
+    /* istanbul ignore next */
     next(error);
   }
 };
@@ -30,6 +31,7 @@ exports.updateDataValidator = async (req, res, next) => {
     // }
     next();
   } catch (error) {
+    /* istanbul ignore next */
     next(error);
   }
 };
@@ -50,6 +52,7 @@ exports.updatePasswordValidator = async (req, res, next) => {
     }
     next();
   } catch (error) {
+    /* istanbul ignore next */
     next(error);
   }
 };

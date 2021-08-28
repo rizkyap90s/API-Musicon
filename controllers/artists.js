@@ -6,6 +6,7 @@ class Artists {
       const data = await Artist.findById(req.params.id).populate("albums");
       res.status(200).json({ data });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -27,6 +28,7 @@ class Artists {
 
       res.status(200).json({ artist });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -40,10 +42,9 @@ class Artists {
       const newRelease = getArtists.filter(
         (artist) => artist.albums[0].releaseDate.slice(0, 3) === "202"
       );
-
-      console.log(newRelease);
       res.status(200).json({ newRelease });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }

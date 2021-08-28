@@ -40,6 +40,7 @@ exports.sendAuthorEmail = async (req, res, next) => {
 
       transporter.sendMail(options, function (err, info) {
         if (error) {
+          /* istanbul ignore next */
           next(error);
           return;
         }
@@ -48,6 +49,7 @@ exports.sendAuthorEmail = async (req, res, next) => {
 
     next();
   } catch (error) {
+    /* istanbul ignore next */
     next(error);
   }
 };

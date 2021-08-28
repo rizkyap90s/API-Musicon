@@ -77,41 +77,33 @@ passport.use(
 // Logic to login
 exports.login = (req, res, next) => {
   if (validator.isEmail(req.body.username)) {
-    passport.authenticate(
-      "loginEmail",
-      { session: false },
-      (err, user, info) => {
-        if (err) {
-          return next({ message: err.message, statusCode: 401 });
-        }
-
-        if (!user) {
-          return next({ message: info.message, statusCode: 401 });
-        }
-
-        req.user = user;
-
-        next();
+    passport.authenticate("loginEmail", { session: false }, (err, user, info) => {
+      if (err) {
+        return next({ message: err.message, statusCode: 401 });
       }
-    )(req, res, next);
+
+      if (!user) {
+        return next({ message: info.message, statusCode: 401 });
+      }
+
+      req.user = user;
+
+      next();
+    })(req, res, next);
   } else {
-    passport.authenticate(
-      "loginUsername",
-      { session: false },
-      (err, user, info) => {
-        if (err) {
-          return next({ message: err.message, statusCode: 401 });
-        }
-
-        if (!user) {
-          return next({ message: info.message, statusCode: 401 });
-        }
-
-        req.user = user;
-
-        next();
+    passport.authenticate("loginUsername", { session: false }, (err, user, info) => {
+      if (err) {
+        return next({ message: err.message, statusCode: 401 });
       }
-    )(req, res, next);
+
+      if (!user) {
+        return next({ message: info.message, statusCode: 401 });
+      }
+
+      req.user = user;
+
+      next();
+    })(req, res, next);
   }
 };
 
@@ -172,177 +164,6 @@ passport.use(
       } catch (e) {
         /* istanbul ignore next */
         return done(e, false, { message: "User can't be created" });
-      }
-    }
-  )
-);
-
-// Logic for admin
-exports.admin = (req, res, next) => {
-  passport.authorize("admin", { session: false }, (err, user, info) => {
-    if (err) {
-      return next({ message: err.message, statusCode: 403 });
-    }
-
-    if (!user) {
-      return next({ message: info.message, statusCode: 403 });
-    }
-
-    req.user = user;
-
-    next();
-  })(req, res, next);
-};
-
-passport.use(
-  "admin",
-  new JWTstrategy(
-    {
-      secretOrKey: process.env.JWT_SECRET,
-      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    },
-    async (token, done) => {
-      try {
-        const data = await User.findOne({ _id: token.user });
-
-        if (data.role === "admin") {
-          return done(null, token);
-        }
-
-        return done(null, false, { message: "Forbidden access" });
-      } catch (error) {
-        return done(error, false, { message: "Forbidden access" });
-      }
-    }
-  )
-);
-
-// Logic for user
-exports.user = (req, res, next) => {
-  passport.authorize("user", { session: false }, (err, user, info) => {
-    if (err) {
-      return next({ message: err.message, statusCode: 403 });
-    }
-
-    if (!user) {
-      return next({ message: info.message, statusCode: 403 });
-    }
-
-    req.user = user;
-
-    next();
-  })(req, res, next);
-};
-
-passport.use(
-  "user",
-  new JWTstrategy(
-    {
-      secretOrKey: process.env.JWT_SECRET,
-      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    },
-    async (token, done) => {
-      try {
-        const data = await User.findOne({ _id: token.user });
-
-        if (data.role === "user") {
-          return done(null, token);
-        }
-
-        return done(null, false, { message: "Forbidden access" });
-      } catch (error) {
-        return done(error, false, { message: "Forbidden access" });
-      }
-    }
-  )
-);
-
-// Logic for admin or user
-exports.adminOrUser = (req, res, next) => {
-  passport.authorize("adminOrUser", { session: false }, (err, user, info) => {
-    if (err) {
-      return next({ message: err.message, statusCode: 403 });
-    }
-
-    if (!user) {
-      return next({ message: info.message, statusCode: 403 });
-    }
-
-    req.user = user;
-
-    next();
-  })(req, res, next);
-};
-
-passport.use(
-  "adminOrUser",
-  new JWTstrategy(
-    {
-      secretOrKey: process.env.JWT_SECRET,
-      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    },
-    async (token, done) => {
-      try {
-        const data = await User.findOne({ _id: token.user });
-
-        if (data.role === "admin" || data.role === "user") {
-          return done(null, token);
-        }
-
-        return done(null, false, { message: "Forbidden access" });
-      } catch (error) {
-        return done(error, false, { message: "Forbidden access" });
-      }
-    }
-  )
-);
-
-exports.adminOrSameUser = (req, res, next) => {
-  passport.authorize(
-    "adminOrSameUser",
-    { session: false },
-    (err, user, info) => {
-      if (err) {
-        return next({ message: err.message, statusCode: 403 });
-      }
-
-      if (!user) {
-        return next({ message: info.message, statusCode: 403 });
-      }
-
-      if (info.message == "user" && user.user !== req.params.id) {
-        return next({ message: "Forbidden access", statusCode: 403 });
-      }
-
-      req.user = user;
-
-      next();
-    }
-  )(req, res, next);
-};
-
-passport.use(
-  "adminOrSameUser",
-  new JWTstrategy(
-    {
-      secretOrKey: process.env.JWT_SECRET,
-      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    },
-    async (token, done) => {
-      try {
-        const data = await User.findOne({ _id: token.user });
-
-        if (data.role === "admin") {
-          return done(null, token, { message: "admin" });
-        }
-
-        if (data.role === "user") {
-          return done(null, token, { message: "user" });
-        }
-
-        return done(null, false, { message: "Forbidden access" });
-      } catch (error) {
-        return done(error, false, { message: "Forbidden access" });
       }
     }
   )

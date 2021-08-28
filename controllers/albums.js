@@ -17,11 +17,13 @@ class AlbumCtrl {
         .sort("-releaseDate");
 
       if (albums.length === 0) {
+        /* istanbul ignore next */
         return next({ message: "Album not found.", statusCode: 404 });
       }
 
       res.status(200).json({ albums });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -42,9 +44,9 @@ class AlbumCtrl {
       if (albums.length === 0) {
         return next({ message: "Album not found.", statusCode: 404 });
       }
-
       res.status(200).json({ albums });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -58,6 +60,7 @@ class AlbumCtrl {
 
       res.status(200).json({ album });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }

@@ -4,10 +4,7 @@ const validator = require("validator");
 exports.signUpValidator = async (req, res, next) => {
   try {
     const errorMessages = [];
-    if (
-      validator.isEmpty(req.body.fullname) ||
-      validator.isEmpty(req.body.username)
-    ) {
+    if (validator.isEmpty(req.body.fullname) || validator.isEmpty(req.body.username)) {
       errorMessages.push("field can't be empty");
     }
     if (!validator.isEmail(req.body.email)) {
@@ -22,6 +19,7 @@ exports.signUpValidator = async (req, res, next) => {
     }
     next();
   } catch (error) {
+    /* istanbul ignore next */
     next(error);
   }
 };
@@ -42,6 +40,7 @@ exports.signInValidator = async (req, res, next) => {
     }
     next();
   } catch (error) {
+    /* istanbul ignore next */
     next(error);
   }
 };

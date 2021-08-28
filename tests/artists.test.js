@@ -4,29 +4,30 @@ const jwt = require("jsonwebtoken");
 const app = require("../app");
 const mongoose = require("mongoose");
 const { Artist, Album, User } = require("../models");
+const faker = require("faker");
+
 let userToken = "";
 let artistId = "";
 
 beforeAll(async () => {
-  await Artist.deleteMany();
-  await User.deleteMany();
-  await Album.deleteMany();
+  // await Artist.deleteMany();
+  // await User.deleteMany();
+  // await Album.deleteMany();
 
   const userTest = await User.create({
-    username: "usertestartists",
-    fullname: "User Test Artists",
-    email: "usertestartists@dummy.com",
-    password: "Str0ngp@ssword",
+    username: faker.internet.userName() + Math.floor(Math.random() * 1000),
+    fullname: faker.name.findName(),
+    email: Math.floor(Math.random() * 1000) + faker.internet.email(),
+    password: "Kiki123!",
   });
 
   const artistTest = await Artist.create({
-    name: "artisttestt",
+    name: faker.name.findName() + Math.floor(Math.random() * 1000),
   });
 
   const albumTest = await Album.create({
-    albumTitle: "albumtest",
+    albumTitle: faker.commerce.product(),
     artistId: artistTest._id,
-    releaseDate: "2021",
   });
 
   artistTest.albums.push(albumTest);
@@ -74,7 +75,7 @@ describe("Get Artist By Name", () => {
   it("Success", async () => {
     const response = await request(app)
       .get(`/artists/search`)
-      .query({ name: "test", limit: 3 })
+      .query({ name: "a", limit: 3 })
       .set("Authorization", `Bearer ${userToken}`);
 
     expect(response.statusCode).toEqual(200);
@@ -83,9 +84,7 @@ describe("Get Artist By Name", () => {
   });
 
   it("Missing authorization header", async () => {
-    const response = await request(app)
-      .get(`/artists/search`)
-      .query({ name: "test", limit: 3 });
+    const response = await request(app).get(`/artists/search`).query({ name: "test", limit: 3 });
 
     expect(response.statusCode).toEqual(401);
     expect(response.body).toBeInstanceOf(Object);

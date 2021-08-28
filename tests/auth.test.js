@@ -2,14 +2,23 @@ const req = require("supertest");
 const app = require("../app");
 const mongoose = require("mongoose");
 const { User } = require("../models");
+const faker = require("faker");
 
 beforeAll(async () => {
-  await User.deleteMany();
-  await User.create({
-    username: "rizkyap90s2",
-    fullname: "rizky ade pratama putra2",
-    email: "rizkyap90s2@gmail.com",
-    password: "Kiki123!",
+  // await User.deleteMany();
+  // await User.create({
+  //   username: faker.internet.userName() + Math.floor(Math.random() * 1000),
+  //   fullname: faker.name.findName(),
+  //   email: Math.floor(Math.random() * 1000) + faker.internet.email(),
+  //   password: "Kiki123!",
+  // });
+});
+
+describe("No Endpoint detected", () => {
+  it("No", async () => {
+    const res = await req(app).get("");
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toBeInstanceOf(Object);
   });
 });
 
@@ -36,9 +45,9 @@ describe("Sign Up", () => {
   });
   it("Sign Up duplicate user", async () => {
     const res = await req(app).post("/auth/signup").send({
-      username: "rizkyap90s2",
-      fullname: "rizky ade pratama putra2",
-      email: "rizkyap90s2@gmail.com",
+      username: "rizkyap90s",
+      fullname: "rizky ade pratama putra",
+      email: "rizkyap90s@gmail.com",
       password: "Kiki123!",
     });
     expect(res.statusCode).toEqual(401);

@@ -2,6 +2,7 @@ const req = require("supertest");
 const app = require("../app");
 const jwt = require("jsonwebtoken");
 const { User, Playlist, Artist, Album, Song } = require("../models");
+const faker = require("faker");
 
 let userToken;
 let createUser;
@@ -10,11 +11,11 @@ let createPlaylistAgain;
 let createSong;
 
 beforeAll(async () => {
-  Playlist.deleteMany();
+  // Playlist.deleteMany();
   createUser = await User.create({
-    username: "rizkyap90s3",
-    fullname: "rizky ade pratama putra3",
-    email: "rizkyap90s3@gmail.com",
+    username: faker.internet.userName() + Math.floor(Math.random() * 1000),
+    fullname: faker.name.findName(),
+    email: Math.floor(Math.random() * 1000) + faker.internet.email(),
     password: "Kiki123!",
   });
   userToken = jwt.sign({ user: createUser._id }, process.env.JWT_SECRET);
@@ -31,11 +32,11 @@ beforeAll(async () => {
     description: "LOVE IT!!",
   });
   const artistTest = await Artist.create({
-    name: "artist",
+    name: faker.name.findName() + Math.floor(Math.random() * 1000),
   });
 
   const albumTest = await Album.create({
-    albumTitle: "albumt",
+    albumTitle: faker.commerce.product(),
     artistId: artistTest._id,
   });
 
@@ -43,7 +44,7 @@ beforeAll(async () => {
   await artistTest.save();
 
   createSong = await Song.create({
-    songTitle: "song",
+    songTitle: faker.lorem.word(),
     artistId: artistTest._id,
     albumId: albumTest._id,
     songDuration: "69",
@@ -119,7 +120,7 @@ describe("get playlist by title", () => {
     const res = await req(app)
       .get(`/playlists/search`)
       .set("Authorization", `Bearer ${userToken}`)
-      .query({ title: "new", limit: 3 });
+      .query({ title: "a", limit: 3 });
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Object);
   });

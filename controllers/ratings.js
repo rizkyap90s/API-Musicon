@@ -15,6 +15,7 @@ class RatingCtrl {
         res.status(200).json({ rating: data.rating });
       }
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
