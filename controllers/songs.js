@@ -91,8 +91,17 @@ class SongCtrl {
       const regex = new RegExp("^202[01].*");
 
       const songs = await Song.find({ releaseDate: { $regex: regex } })
-        .populate({ path: "artistId", model: Artist })
-        .select("songTitle songImage artistId tags")
+        .populate({
+          path: "artistId",
+          model: Artist,
+          select: { _id: 1, name: 1, photo: 1 },
+        })
+        .populate({
+          path: "albumId",
+          model: Album,
+          select: { _id: 1, albumTitle: 1 },
+        })
+        .select("songTitle songImage songDuration artistId albumId tags audio")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
         .sort("-releaseDate");
@@ -113,11 +122,20 @@ class SongCtrl {
       const currentPage = req.query.page;
 
       const songs = await Song.find()
-        .populate({ path: "artistId", model: Artist })
-        .select("songTitle songImage artistId tags")
+        .populate({
+          path: "artistId",
+          model: Artist,
+          select: { _id: 1, name: 1, photo: 1 },
+        })
+        .populate({
+          path: "albumId",
+          model: Album,
+          select: { _id: 1, albumTitle: 1 },
+        })
+        .select("songTitle songImage songDuration artistId albumId tags audio")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
-        .sort("songTitle");
+        .sort("-releaseDate");
 
       if (songs.length === 0) {
         return next({ message: "Song not found.", statusCode: 404 });
