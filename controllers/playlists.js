@@ -1,4 +1,4 @@
-const { Playlist, User, Song, Artist } = require("../models");
+const { Playlist, User, Song, Artist, Album } = require("../models");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -78,12 +78,21 @@ class Playlists {
             songDuration: 1,
             songImage: 1,
             audio: 1,
+            artistId: 1,
+            albumId: 1,
           },
-          populate: {
-            path: "artistId",
-            model: Artist,
-            select: { _id: 1, name: 1 },
-          },
+          populate: [
+            {
+              path: "artistId",
+              model: Artist,
+              select: { _id: 1, name: 1 },
+            },
+            {
+              path: "albumId",
+              model: Album,
+              select: { _id: 1, albumTitle: 1 },
+            },
+          ],
         })
         .populate({
           path: "author",
