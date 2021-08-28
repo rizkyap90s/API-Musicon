@@ -54,6 +54,7 @@ describe("Get User By Id", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("data");
   });
   it("get User By Id not valid id", async () => {
     const res = await req(app)
@@ -61,11 +62,13 @@ describe("Get User By Id", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(400);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
   it("get User By Id not authorize", async () => {
     const res = await req(app).get(`/users/${createUser._id}`);
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
 
@@ -82,6 +85,7 @@ describe("Update User Data By Id", () => {
       });
     expect(res.statusCode).toEqual(201);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("data");
   });
   it("Update User Data By Id not found id", async () => {
     const res = await req(app)
@@ -95,6 +99,7 @@ describe("Update User Data By Id", () => {
       });
     expect(res.statusCode).toEqual(404);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
   it("Update User Data By Id not authorize", async () => {
     const res = await req(app)
@@ -107,6 +112,7 @@ describe("Update User Data By Id", () => {
       });
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
 
@@ -121,6 +127,7 @@ describe("Update User Password By Id", () => {
       });
     expect(res.statusCode).toEqual(201);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("message");
   });
   it("Update User Password By Id not strong enough", async () => {
     const res = await req(app)
@@ -132,6 +139,7 @@ describe("Update User Password By Id", () => {
       });
     expect(res.statusCode).toEqual(400);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
   it("Update User Password By Id not authorize", async () => {
     const res = await req(app).put(`/users/updatepassword/${createUser._id}`).send({
@@ -139,6 +147,7 @@ describe("Update User Password By Id", () => {
     });
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
 describe("Get User Top Song", () => {
@@ -149,6 +158,7 @@ describe("Get User Top Song", () => {
       .query({ title: "a", limit: 3 });
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("songs");
   });
   it("get user top song not authorize", async () => {
     const res = await req(app)
@@ -156,6 +166,7 @@ describe("Get User Top Song", () => {
       .query({ title: "a", limit: 3 });
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
 describe("Get User Top artist", () => {
@@ -166,6 +177,7 @@ describe("Get User Top artist", () => {
       .query({ title: "a", limit: 3 });
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("artists");
   });
   it("get user top artist not authorize", async () => {
     const res = await req(app)
@@ -173,5 +185,6 @@ describe("Get User Top artist", () => {
       .query({ title: "a", limit: 3 });
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });

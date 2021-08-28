@@ -48,6 +48,7 @@ class SongCtrl {
 
       res.status(200).json({ songs });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -80,6 +81,7 @@ class SongCtrl {
 
       res.status(200).json({ songs });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -112,6 +114,7 @@ class SongCtrl {
 
       res.status(200).json({ songs });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -143,10 +146,11 @@ class SongCtrl {
 
       res.status(200).json({ songs });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
-
+  /* istanbul ignore next */
   async getLyrics(req, res, next) {
     try {
       const song = await Song.findById(req.params.id)
@@ -162,6 +166,7 @@ class SongCtrl {
       }
       res.status(200).json({ lyrics });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }

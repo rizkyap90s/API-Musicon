@@ -94,3 +94,25 @@ describe("Get Albums By Title", () => {
     expect(response.body).toHaveProperty("errors");
   });
 });
+
+describe("get album by id", () => {
+  it("get album by id success", async () => {
+    const response = await request(app)
+      .get(`/albums/${albumId}`)
+      .set("Authorization", `Bearer ${userToken}`);
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toBeInstanceOf(Object);
+  });
+  it("get album by id nit valid id", async () => {
+    const response = await request(app)
+      .get(`/albums/${albumId}0`)
+      .set("Authorization", `Bearer ${userToken}`);
+    expect(response.statusCode).toEqual(400);
+    expect(response.body).toBeInstanceOf(Object);
+  });
+  it("get album by id not authorize", async () => {
+    const response = await request(app).get(`/albums/${albumId}`);
+    expect(response.statusCode).toEqual(401);
+    expect(response.body).toBeInstanceOf(Object);
+  });
+});

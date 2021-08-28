@@ -47,6 +47,7 @@ class RatingCtrl {
 
       res.status(201).json({ message: "Rating is added/ updated." });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }

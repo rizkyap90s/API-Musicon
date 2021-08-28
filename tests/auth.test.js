@@ -56,9 +56,17 @@ describe("Sign Up", () => {
 });
 
 describe("Login", () => {
-  it("Login success", async () => {
+  it("Login username success", async () => {
     const res = await req(app).post("/auth/login").send({
       username: "rizkyap90s",
+      password: "Kiki123!",
+    });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toBeInstanceOf(Object);
+  });
+  it("Login email success", async () => {
+    const res = await req(app).post("/auth/login").send({
+      username: "rizkyap90s@gmail.com",
       password: "Kiki123!",
     });
     expect(res.statusCode).toEqual(200);

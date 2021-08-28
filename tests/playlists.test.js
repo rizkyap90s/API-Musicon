@@ -65,6 +65,7 @@ describe("Add playlist", () => {
       });
     expect(res.statusCode).toEqual(201);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("message");
   });
   it("add playlist not authorize", async () => {
     const res = await req(app)
@@ -77,6 +78,7 @@ describe("Add playlist", () => {
       });
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
 
@@ -85,26 +87,30 @@ describe("get all playlist", () => {
     const res = await req(app).get("/playlists").set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("data");
   });
   it("get all playlist not authorize", async () => {
     const res = await req(app).get("/playlists");
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
 
 describe("get playlist by id", () => {
-  it("get playlist by id success", async () => {
+  it("get User By Id success", async () => {
     const res = await req(app)
       .get(`/playlists/${createPlaylist._id}`)
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("data");
   });
   it("get playlist by id not authorize", async () => {
     const res = await req(app).get(`/playlists/${createPlaylist._id}`);
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
   it("get playlist by id id is not valid", async () => {
     const res = await req(app)
@@ -112,6 +118,32 @@ describe("get playlist by id", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(400);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
+  });
+});
+
+describe("get playlist user by id", () => {
+  it("get playlist by user id success", async () => {
+    const res = await req(app)
+      .get(`/playlists/users/${createUser._id}`)
+      .set("Authorization", `Bearer ${userToken}`);
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("data");
+  });
+  it("get playlist by user id not authorize", async () => {
+    const res = await req(app).get(`/playlists/users/${createUser._id}`);
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
+  });
+  it("get playlist by user id not valid id", async () => {
+    const res = await req(app)
+      .get(`/playlists/users/${createUser._id}0`)
+      .set("Authorization", `Bearer ${userToken}`);
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
 
@@ -123,11 +155,13 @@ describe("get playlist by title", () => {
       .query({ title: "a", limit: 3 });
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("playlist");
   });
   it("get playlist by title not authorize", async () => {
     const res = await req(app).get(`/playlists/search`).query({ title: "new", limit: 3 });
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
   it("get playlist by title not found", async () => {
     const res = await req(app)
@@ -136,8 +170,10 @@ describe("get playlist by title", () => {
       .query({ title: "anu", limit: 3 });
     expect(res.statusCode).toEqual(404);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
+
 describe("update playlist", () => {
   it("update playlist success", async () => {
     const res = await req(app)
@@ -150,6 +186,7 @@ describe("update playlist", () => {
       });
     expect(res.statusCode).toEqual(201);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("message");
   });
   it("update playlist not authorize", async () => {
     const res = await req(app).put(`/playlists/update/${createPlaylist._id}`).send({
@@ -159,6 +196,7 @@ describe("update playlist", () => {
     });
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
   it("update playlist id not valid", async () => {
     const res = await req(app)
@@ -171,6 +209,7 @@ describe("update playlist", () => {
       });
     expect(res.statusCode).toEqual(500);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
 describe("delete playlist", () => {
@@ -180,6 +219,7 @@ describe("delete playlist", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(201);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("message");
   });
   it("delete playlist id not valid", async () => {
     const res = await req(app)
@@ -187,6 +227,7 @@ describe("delete playlist", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(400);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
 describe("add song", () => {
@@ -196,11 +237,13 @@ describe("add song", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(201);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("data");
   });
   it("add song not authorize", async () => {
     const res = await req(app).post(`/playlists/${createPlaylist._id}/${createSong._id}`);
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
   it("add song not valid", async () => {
     const res = await req(app)
@@ -208,6 +251,7 @@ describe("add song", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(400);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });
 describe("remove song", () => {
@@ -217,11 +261,13 @@ describe("remove song", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(201);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("data");
   });
   it("remove song not authorize", async () => {
     const res = await req(app).delete(`/playlists/${createPlaylist._id}/${createSong._id}`);
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
   it("remove song not valid", async () => {
     const res = await req(app)
@@ -229,5 +275,6 @@ describe("remove song", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(400);
     expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
   });
 });

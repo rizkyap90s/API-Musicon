@@ -15,6 +15,7 @@ class LikeCtrl {
         res.status(200).json({ like: data.like });
       }
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
@@ -46,6 +47,7 @@ class LikeCtrl {
 
       res.status(201).json({ message: "Like is added/ updated." });
     } catch (error) {
+      /* istanbul ignore next */
       next(error);
     }
   }
