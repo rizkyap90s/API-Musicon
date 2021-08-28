@@ -1,4 +1,4 @@
-const { Playlist, User, Song, Artist } = require("../models");
+const { Playlist, User, Song, Artist, Album } = require("../models");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -74,12 +74,27 @@ class Playlists {
         .populate({
           path: "songs",
           model: Song,
-          select: { _id: 1, songTitle: 1, songDuration: 1, songImage: 1 },
-          populate: {
-            path: "artistId",
-            model: Artist,
-            select: { _id: 1, name: 1 },
+          select: {
+            _id: 1,
+            songTitle: 1,
+            songDuration: 1,
+            songImage: 1,
+            audio: 1,
+            artistId: 1,
+            albumId: 1,
           },
+          populate: [
+            {
+              path: "artistId",
+              model: Artist,
+              select: { _id: 1, name: 1 },
+            },
+            {
+              path: "albumId",
+              model: Album,
+              select: { _id: 1, albumTitle: 1 },
+            },
+          ],
         })
         .populate({
           path: "author",
@@ -90,7 +105,7 @@ class Playlists {
       for (let i = 0; i < data.songs.length; i++) {
         allSongsDuration.push(data.songs[i].songDuration);
       }
-      const playlistDuration = allSongsDuration.reduce((total, index) => total + index, 0);
+      const playlistDuration = allSongsDuration.reduce((total, index) => total + index);
       data.playlistDuration = playlistDuration;
 
       res.status(200).json({ data });

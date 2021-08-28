@@ -8,9 +8,8 @@ const SpotifyWebApi = require("spotify-web-api-node");
 const express = require("express");
 const router = express.Router();
 
-router.get("/get_token", (req, res) => {
-  const code = req.query.code;
-
+router.post("/get_token", (req, res) => {
+  const code = req.body.code;
   const spotifyApi = new SpotifyWebApi({
     // redirectUri: process.env.REDIRECT_URI,
     redirectUri: "http://localhost:3000/user",
