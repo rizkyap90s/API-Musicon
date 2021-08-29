@@ -1,5 +1,7 @@
 const { User, Song, Playlist } = require("../models");
 const faker = require("faker");
+const path = require("path");
+const fs = require("fs");
 
 const createPlaylist = async function () {
   try {
@@ -15,7 +17,7 @@ const createPlaylist = async function () {
       for (let j = 0; j < 5; j++) {
         const newPlaylist = await Playlist.create({
           playlistTitle: `${newUser.username}'s ${faker.commerce.productAdjective()} Playlist`,
-          playlistImage: faker.image.imageUrl(),
+          playlistImage: `/images/playlists/${Math.floor(Math.random() * 12)}.jpeg`,
           description: faker.lorem.words(),
           author: newUser._id,
         });
