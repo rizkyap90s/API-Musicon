@@ -68,7 +68,7 @@ describe("Get Albums By Title", () => {
     const response = await request(app)
       .get(`/albums/search`)
       .set("Authorization", `Bearer ${userToken}`)
-      .query({ title: "a", limit: 3 });
+      .query({ title: "a", limit: 3, page: 1 });
 
     expect(response.statusCode).toEqual(200);
     expect(response.body).toBeInstanceOf(Object);

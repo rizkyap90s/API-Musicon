@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const path = require("path");
 
 const storage = multer.diskStorage({
+  /* istanbul ignore next */
   destination: function (req, file, cb) {
     cb(null, "./public/images/users");
   },

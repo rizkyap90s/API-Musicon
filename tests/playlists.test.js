@@ -9,6 +9,7 @@ let createUser;
 let createPlaylist;
 let createPlaylistAgain;
 let createSong;
+let playlistId;
 
 beforeAll(async () => {
   // Playlist.deleteMany();
@@ -50,6 +51,7 @@ beforeAll(async () => {
     songDuration: "69",
     tags: "songtest, albumtest, artisttest",
   });
+  playlistId = createPlaylist._id;
 });
 
 describe("Add playlist", () => {
@@ -100,7 +102,7 @@ describe("get all playlist", () => {
 describe("get playlist by id", () => {
   it("get User By Id success", async () => {
     const res = await req(app)
-      .get(`/playlists/${createPlaylist._id}`)
+      .get(`/playlists/${playlistId}`)
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Object);

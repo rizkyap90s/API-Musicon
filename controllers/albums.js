@@ -16,11 +16,6 @@ class AlbumCtrl {
         .limit(pageSize)
         .sort("-releaseDate");
 
-      if (albums.length === 0) {
-        /* istanbul ignore next */
-        return next({ message: "Album not found.", statusCode: 404 });
-      }
-
       res.status(200).json({ albums });
     } catch (error) {
       /* istanbul ignore next */

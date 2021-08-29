@@ -49,6 +49,14 @@ beforeAll(async () => {
 });
 
 describe("Set Like", () => {
+  it("get like success(no action)", async () => {
+    const response = await request(app)
+      .get(`/songs/${createSong._id}/like`)
+      .set("Authorization", `Bearer ${userToken}`);
+
+    expect(response.statusCode).toEqual(200);
+    expect(response.body).toBeInstanceOf(Object);
+  });
   it("set like success", async () => {
     const response = await request(app)
       .post(`/songs/${createSong._id}/like`)

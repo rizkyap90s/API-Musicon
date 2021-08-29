@@ -63,7 +63,6 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
 /* Import routes */
 const google = require("./routes/auth/google");
 const facebook = require("./routes/auth/facebook");
-const spotify = require("./routes/auth/spotify");
 const auth = require("./routes/auth/local");
 const playlists = require("./routes/playlists");
 const songs = require("./routes/songs");
@@ -93,7 +92,6 @@ app.use(express.static("public"));
 /* Use the routes */
 app.use("/auth/google", google);
 app.use("/auth/facebook", facebook);
-app.use("/auth/spotify", spotify);
 app.use("/auth", auth);
 app.use("/playlists/:playlistId/rating", ratings);
 app.use("/playlists", playlists);

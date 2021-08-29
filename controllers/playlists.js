@@ -104,13 +104,7 @@ class Playlists {
         });
       data.playlistDuration = data.songs
         .map((song) => song.songDuration)
-        .reduce((total, index) => total + index);
-      // const allSongsDuration = [];
-      // for (let i = 0; i < data.songs.length; i++) {
-      //   allSongsDuration.push(data.songs[i].songDuration);
-      // }
-      // const playlistDuration = allSongsDuration.reduce((total, index) => total + index);
-      // data.playlistDuration = playlistDuration;
+        .reduce((total, index) => total + index, 0);
 
       res.status(200).json({ data });
     } catch (error) {
