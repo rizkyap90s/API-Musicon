@@ -1,5 +1,5 @@
 // Rezki's Code
-const { User, Artist, Song, Playlist } = require("../models");
+const { User, Artist, Song, Playlist, Album } = require("../models");
 const mongoose = require("mongoose");
 
 class Users {
@@ -61,7 +61,9 @@ class Users {
       }
       const songs = await Song.find({ _id: { $in: [...topSongs] } })
         .populate({ path: "artistId", model: Artist, select: { name: 1, photo: 1 } })
-        .select("songTitle songImage artistId songDuration")
+        .populate({ path: "albumId", model: Album, select: "albumTitle" })
+
+        // .select("songTitle songImage artistId songDuration")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize);
 

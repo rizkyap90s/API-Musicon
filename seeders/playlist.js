@@ -14,17 +14,13 @@ const createPlaylist = async function () {
       });
       for (let j = 0; j < 5; j++) {
         const newPlaylist = await Playlist.create({
-          playlistTitle: `${
-            newUser.username
-          }'s ${faker.commerce.productAdjective()} Playlist`,
+          playlistTitle: `${newUser.username}'s ${faker.commerce.productAdjective()} Playlist`,
           playlistImage: faker.image.imageUrl(),
           description: faker.lorem.words(),
           author: newUser._id,
         });
         for (let k = 0; k < 15; k++) {
-          newPlaylist.songs.push(
-            getSong[Math.floor(Math.random() * getSong.length)]._id
-          );
+          newPlaylist.songs.push(getSong[Math.floor(Math.random() * getSong.length)]._id);
         }
         newPlaylist.save();
       }
