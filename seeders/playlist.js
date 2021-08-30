@@ -1,7 +1,5 @@
 const { User, Song, Playlist } = require("../models");
 const faker = require("faker");
-const path = require("path");
-const fs = require("fs");
 
 const createPlaylist = async function () {
   try {
