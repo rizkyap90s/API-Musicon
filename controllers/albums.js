@@ -48,10 +48,17 @@ class AlbumCtrl {
 
   async getDetailAlbum(req, res, next) {
     try {
-      const album = await Album.findById(req.params.id).populate({
-        path: "songs",
-        model: Song,
-      });
+      const album = await Album.findById(req.params.id)
+        .populate({
+          path: "songs",
+          model: Song,
+          select: "-artistId -albumId -__v",
+        })
+        .populate({
+          path: "artistId",
+          model: Artist,
+          select: "name photo",
+        });
 
       res.status(200).json({ album });
     } catch (error) {
