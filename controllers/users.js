@@ -126,6 +126,18 @@ class Users {
         .populate({
           path: "songId",
           model: Song,
+          populate: [
+            {
+              path: "artistId",
+              model: Artist,
+              select: "name",
+            },
+            {
+              path: "albumId",
+              model: Album,
+              select: "albumTitle",
+            },
+          ],
         })
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize);
