@@ -1,5 +1,5 @@
 // Rezki's Code
-const { User, Artist, Song, Playlist, Album } = require("../models");
+const { User, Artist, Song, Playlist, Album, Like } = require("../models");
 const mongoose = require("mongoose");
 
 class Users {
@@ -22,9 +22,13 @@ class Users {
       if (req.file) {
         req.body.photo = "/" + req.file.path.split("/").slice(1).join("/");
       }
-      const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
-        new: true,
-      }).select("-password -__v");
+      const data = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        {
+          new: true,
+        }
+      ).select("-password -__v");
       if (!data) {
         return next({ message: "User not found.", statusCode: 404 });
       }
@@ -50,7 +54,7 @@ class Users {
   async userTopSongs(req, res, next) {
     try {
       const pageSize = +req.query.limit || 15;
-      const currentPage = req.query.page;
+      const currentPage = +req.query.page;
 
       const getUser = await User.findById(req.params.id).populate("playlists");
       const topSongs = new Set();
@@ -60,7 +64,11 @@ class Users {
         }
       }
       const songs = await Song.find({ _id: { $in: [...topSongs] } })
-        .populate({ path: "artistId", model: Artist, select: { name: 1, photo: 1 } })
+        .populate({
+          path: "artistId",
+          model: Artist,
+          select: { name: 1, photo: 1 },
+        })
         .populate({ path: "albumId", model: Album, select: "albumTitle" })
 
         // .select("songTitle songImage artistId songDuration")
@@ -76,7 +84,7 @@ class Users {
   async userTopArtist(req, res, next) {
     try {
       const pageSize = +req.query.limit || 15;
-      const currentPage = req.query.page;
+      const currentPage = +req.query.page;
 
       const getUser = await User.findById(req.params.id).populate({
         path: "playlists",
@@ -102,6 +110,33 @@ class Users {
       res.status(200).json({ artists });
     } catch (error) {
       /* istanbul ignore next */
+      next(error);
+    }
+  }
+
+  async getLikedSongs(req, res, next) {
+    try {
+      const pageSize = +req.query.limit || 15;
+      const currentPage = +req.query.page;
+
+      let data = await Like.find({
+        authorId: req.params.id,
+        like: true,
+      })
+        .populate({
+          path: "songId",
+          model: Song,
+        })
+        .skip(pageSize * (currentPage - 1))
+        .limit(pageSize);
+
+      if (!data) {
+        return next({ message: "Song not found.", statusCode: 404 });
+      }
+
+      const songs = data.map((el) => el.songId);
+      res.status(200).json({ songs });
+    } catch (error) {
       next(error);
     }
   }
