@@ -1,29 +1,18 @@
+const app = require("../app");
 const { Playlist, User } = require("../models");
 
 exports.sendPushNotification = async (req, res, next) => {
   try {
-    let socket_id = [];
-    const io = req.app.get("socketio");
+    const io = req.app.locals.io;
+
     const playlist = await Playlist.findById(req.params.playlistId)
       .select("author playlistTitle")
       .populate({ path: "author", model: User, select: "-password" });
 
-    const user = await User.findById(req.user.user);
-    const data = {
-      playlist,
-      ratedBy: user.username,
-    };
+    const user = await User.findById(req.user.user).select("-password");
+    const data = [playlist, user];
 
-    io.on("connection", (socket) => {
-      socket_id.push(socket.id);
-      if (socket_id[0] === socket.id) {
-        // remove the connection listener for any subsequent
-        // connections with the same ID
-        io.removeAllListeners("connection");
-      }
-
-      socket.emit("newRating", JSON.stringify(data));
-    });
+    io.emit("newRating", `${data}`);
 
     next();
   } catch (error) {

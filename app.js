@@ -133,8 +133,17 @@ if (process.env.NODE_ENV !== "test") {
       method: ["GET", "POST"],
     },
   });
-  app.set("socketio", io);
-  // app.listen(3000, () => console.log(`Server running on 3000`));
+
+  io.on("connection", (socket) => {
+    console.log("new client connected");
+
+    socket.on("disconnect", () => {
+      console.log("client disconnected");
+    });
+  });
+
+  // app.set("socketio", io);
+  app.locals.io = io;
 }
 
 // Export app for testing
