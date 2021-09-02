@@ -1,5 +1,5 @@
 const app = require("../app");
-const { Playlist, User } = require("../models");
+const { Playlist, User, Rating } = require("../models");
 
 exports.sendPushNotification = async (req, res, next) => {
   try {
@@ -10,7 +10,7 @@ exports.sendPushNotification = async (req, res, next) => {
       .populate({ path: "author", model: User, select: "-password" });
 
     const user = await User.findById(req.user.user).select("-password");
-    const data = { playlist, ratedBy: user };
+    const data = { playlist, rating: req.body.rating, ratedBy: user };
 
     io.emit("newRating", data);
 
