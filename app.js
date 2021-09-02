@@ -131,5 +131,5 @@ if (process.env.NODE_ENV !== "test") {
   app.set("socketio", io);
 }
 
-// Export app for testing purposes
+// Export app for testing
 module.exports = app;
