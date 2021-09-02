@@ -119,17 +119,18 @@ app.use(errorHandler);
 
 /* Run the server */
 /* istanbul ignore next */
-if (process.env.NODE_ENV !== "test") {
-  const server = app.listen(3000, () => console.log(`Server running on 3000`));
-  // Enable socket.io
-  const io = require("socket.io")(server, {
-    cors: {
-      origin: "*",
-      method: ["GET", "POST"],
-    },
-  });
-  app.set("socketio", io);
-}
+// if (process.env.NODE_ENV !== "test") {
+const server = app.listen(3000, () => console.log(`Server running on 3000`));
+
+// Enable socket.io
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    method: ["GET", "POST"],
+  },
+});
+app.set("socketio", io);
+// }
 
 // Export app for testing
 module.exports = app;
