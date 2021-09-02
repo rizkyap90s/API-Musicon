@@ -103,6 +103,10 @@ app.use("/songs", songs);
 app.use("/users", users);
 app.use("/albums", albums);
 
+app.get("/", (req, res) => {
+  res.send("Hello");
+});
+
 /* If route not found */
 app.all("*", (req, res, next) => {
   try {
@@ -119,18 +123,19 @@ app.use(errorHandler);
 
 /* Run the server */
 /* istanbul ignore next */
-// if (process.env.NODE_ENV !== "test") {
-const server = app.listen(3000, () => console.log(`Server running on 3000`));
+if (process.env.NODE_ENV !== "test") {
+  //   const server = app.listen(3000, () => console.log(`Server running on 3000`));
 
-// Enable socket.io
-const io = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-    method: ["GET", "POST"],
-  },
-});
-app.set("socketio", io);
-// }
+  //   // Enable socket.io
+  //   const io = require("socket.io")(server, {
+  //     cors: {
+  //       origin: "*",
+  //       method: ["GET", "POST"],
+  //     },
+  //   });
+  //   app.set("socketio", io);
+  app.listen(3000, () => console.log(`Server running on 3000`));
+}
 
 // Export app for testing
 module.exports = app;
