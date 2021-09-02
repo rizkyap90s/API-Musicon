@@ -10,9 +10,9 @@ exports.sendPushNotification = async (req, res, next) => {
       .populate({ path: "author", model: User, select: "-password" });
 
     const user = await User.findById(req.user.user).select("-password");
-    const data = [playlist, user];
+    const data = { playlist, ratedBy: user };
 
-    io.emit("newRating", `${data}`);
+    io.emit("newRating", data);
 
     next();
   } catch (error) {
