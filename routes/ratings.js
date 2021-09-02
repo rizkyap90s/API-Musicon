@@ -9,6 +9,7 @@ const {
 } = require("../middlewares/validators/ratings");
 
 const { sendAuthorEmail } = require("../middlewares/mailers/rateNotification");
+const { sendPushNotification } = require("../middlewares/socketio");
 
 const { getRating, createOrUpdateRating } = require("../controllers/ratings");
 
@@ -20,6 +21,7 @@ router.post(
   isLoggedIn,
   ratingValidator,
   sendAuthorEmail,
+  sendPushNotification,
   createOrUpdateRating
 );
 

@@ -6,3 +6,5 @@ package-lock.json
 coverage
 .vscode
 .DS_Store
+seeders/audio/output
+seeders/audio/song-titles.json

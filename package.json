@@ -23,6 +23,7 @@
   },
   "homepage": "https://gitlab.com/binarxglints_batch13/finalproject/team-a/backendteam_a#readme",
   "devDependencies": {
+    "aws-sdk": "^2.980.0",
     "axios": "^0.21.1",
     "faker": "^5.5.3",
     "jest": "^27.0.6",
@@ -53,6 +54,7 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "socket.io": "^4.2.0",
     "spotify-web-api-node": "^5.0.2",
     "validator": "^13.6.0",
     "xss-clean": "^0.1.1"

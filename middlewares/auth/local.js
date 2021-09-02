@@ -77,33 +77,41 @@ passport.use(
 // Logic to login
 exports.login = (req, res, next) => {
   if (validator.isEmail(req.body.username)) {
-    passport.authenticate("loginEmail", { session: false }, (err, user, info) => {
-      if (err) {
-        return next({ message: err.message, statusCode: 401 });
+    passport.authenticate(
+      "loginEmail",
+      { session: false },
+      (err, user, info) => {
+        if (err) {
+          return next({ message: err.message, statusCode: 401 });
+        }
+
+        if (!user) {
+          return next({ message: info.message, statusCode: 401 });
+        }
+
+        req.user = user;
+
+        next();
       }
-
-      if (!user) {
-        return next({ message: info.message, statusCode: 401 });
-      }
-
-      req.user = user;
-
-      next();
-    })(req, res, next);
+    )(req, res, next);
   } else {
-    passport.authenticate("loginUsername", { session: false }, (err, user, info) => {
-      if (err) {
-        return next({ message: err.message, statusCode: 401 });
+    passport.authenticate(
+      "loginUsername",
+      { session: false },
+      (err, user, info) => {
+        if (err) {
+          return next({ message: err.message, statusCode: 401 });
+        }
+
+        if (!user) {
+          return next({ message: info.message, statusCode: 401 });
+        }
+
+        req.user = user;
+
+        next();
       }
-
-      if (!user) {
-        return next({ message: info.message, statusCode: 401 });
-      }
-
-      req.user = user;
-
-      next();
-    })(req, res, next);
+    )(req, res, next);
   }
 };
 
