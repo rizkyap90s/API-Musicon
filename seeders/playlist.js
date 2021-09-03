@@ -1,7 +1,7 @@
 const { User, Song, Playlist } = require("../models");
 const faker = require("faker");
 
-const createPlaylist = async function () {
+exports.createPlaylist = async function () {
   try {
     const getSong = await Song.find();
     for (let i = 0; i < 3; i++) {
@@ -14,19 +14,24 @@ const createPlaylist = async function () {
       });
       for (let j = 0; j < 5; j++) {
         const newPlaylist = await Playlist.create({
-          playlistTitle: `${newUser.username}'s ${faker.commerce.productAdjective()} Playlist`,
-          playlistImage: `/images/playlists/${Math.floor(Math.random() * 12)}.jpeg`,
+          playlistTitle: `${
+            newUser.username
+          }'s ${faker.commerce.productAdjective()} Playlist`,
+          playlistImage: `/images/playlists/${Math.floor(
+            Math.random() * 12
+          )}.jpeg`,
           description: faker.lorem.words(),
           author: newUser._id,
         });
         for (let k = 0; k < 15; k++) {
-          newPlaylist.songs.push(getSong[Math.floor(Math.random() * getSong.length)]._id);
+          newPlaylist.songs.push(
+            getSong[Math.floor(Math.random() * getSong.length)]._id
+          );
         }
-        newPlaylist.save();
+        await newPlaylist.save();
       }
     }
   } catch (error) {
     return console.log(error);
   }
 };
-createPlaylist();
