@@ -131,6 +131,16 @@ passport.use(
           return done(null, false, { message: "User is not found!" });
         }
 
+        const isGoogle = await bcrypt.compare("google", data.password);
+        if (isGoogle) {
+          return done(null, false, { message: `Please login with google.` });
+        }
+
+        const isFacebook = await bcrypt.compare("facebook", data.password);
+        if (isFacebook) {
+          return done(null, false, { message: `Please login with facebook.` });
+        }
+
         const validate = await bcrypt.compare(req.body.password, data.password);
 
         if (!validate) {
@@ -160,6 +170,16 @@ passport.use(
 
         if (!data) {
           return done(null, false, { message: "User is not found!" });
+        }
+
+        const isGoogle = await bcrypt.compare("google", data.password);
+        if (isGoogle) {
+          return done(null, false, { message: `Please login with google.` });
+        }
+
+        const isFacebook = await bcrypt.compare("facebook", data.password);
+        if (isFacebook) {
+          return done(null, false, { message: `Please login with facebook.` });
         }
 
         const validate = await bcrypt.compare(req.body.password, data.password);

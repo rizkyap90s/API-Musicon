@@ -9,7 +9,7 @@ const {
 } = require("../middlewares/validators/ratings");
 
 const { sendAuthorEmail } = require("../middlewares/mailers/rateNotification");
-const { sendPushNotification } = require("../middlewares/socketio");
+const { sendPushNotification } = require("../middlewares/pushNotification");
 
 const { getRating, createOrUpdateRating } = require("../controllers/ratings");
 
