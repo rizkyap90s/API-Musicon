@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 exports.facebookLoginSanitizerValidator = async (req, res, next) => {
   try {
-    const user = await User.find({ email: req.body.email });
+    const user = await User.findOne({ email: req.body.email });
 
     if (user) {
       const isFacebook = await bcrypt.compare("facebook", user.password);
