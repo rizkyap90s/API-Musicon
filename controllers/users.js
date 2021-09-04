@@ -152,6 +152,14 @@ class Users {
       next(error);
     }
   }
+  async deleteCurrentUser(req, res, next) {
+    try {
+      await User.findByIdAndDelete(req.user.user);
+      res.status(200).json({ message: "User is deleted." });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = new Users();

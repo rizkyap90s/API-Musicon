@@ -29,34 +29,6 @@ exports.googleLoginSanitizerValidator = async (req, res, next) => {
   }
 };
 
-// exports.facebookLoginSanitizerValidator = async (req, res, next) => {
-//   try {
-//     const user = await User.find({ email: req.body.email });
-
-//     if (user) {
-//       const isFacebook = await bcrypt.compare("facebook", user.password);
-
-//       if (!isFacebook) {
-//         next({
-//           statusCode: 401,
-//           message: "Please login using another method.",
-//         });
-//       }
-//     }
-
-//     req.body.username = req.body.email.split("@")[0];
-//     req.body.fullname = req.body.givenName + req.body.familyName;
-//     req.body.photo = req.body.imageUrl;
-//     req.body.email = req.body.email;
-//     req.body.password = "facebook";
-
-//     next();
-//   } catch (error) {
-//     /* istanbul ignore next */
-//     next(error);
-//   }
-// };
-
 exports.updateUserDatabase = async (req, res, next) => {
   try {
     let user = await User.findOne({ email: req.body.email });
