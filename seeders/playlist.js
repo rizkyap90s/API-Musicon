@@ -15,7 +15,9 @@ const createPlaylist = async function () {
       for (let j = 0; j < 5; j++) {
         const newPlaylist = await Playlist.create({
           playlistTitle: `${newUser.username}'s ${faker.commerce.productAdjective()} Playlist`,
-          playlistImage: `/images/playlists/${Math.floor(Math.random() * 12)}.jpeg`,
+          playlistImage: `https://musicon-images-bucket.s3.ap-southeast-1.amazonaws.com/playlists/default/${Math.floor(
+            Math.random() * 12
+          )}.jpeg`,
           description: faker.lorem.words(),
           author: newUser._id,
         });

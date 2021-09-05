@@ -5,8 +5,9 @@ const ObjectId = mongoose.Types.ObjectId;
 class Playlists {
   async addNewPlaylist(req, res, next) {
     try {
-      if (req.file) {
-        req.body.playlistImage = "/" + req.file.path.split("/").slice(1).join("/");
+      if (req.files) {
+        console.log(req.files.playlistImage.nameCompress);
+        req.body.playlistImage = "playlists/" + req.files.playlistImage.nameCompress;
       }
       req.body.author = ObjectId(req.user.user);
       await Playlist.create(req.body);
@@ -138,8 +139,9 @@ class Playlists {
 
   async updatePlaylistById(req, res, next) {
     try {
-      if (req.file) {
-        req.body.playlistImage = "/" + req.file.path.split("/").slice(1).join("/");
+      if (req.files) {
+        console.log(req.files.playlistImage.nameCompress);
+        req.body.playlistImage = "playlists/" + req.files.playlistImage.nameCompress;
       }
       req.body.author = ObjectId(req.user.user);
       await Playlist.findOneAndUpdate({ _id: req.params.id }, req.body, {

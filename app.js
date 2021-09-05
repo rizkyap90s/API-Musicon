@@ -14,6 +14,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
 const passport = require("passport");
+const fileUpload = require("express-fileupload");
 
 const app = express(); // Make express app
 
@@ -52,12 +53,9 @@ if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
   app.use(morgan("dev"));
 } else {
   // create a write stream (in append mode)
-  let accessLogStream = fs.createWriteStream(
-    path.join(__dirname, "access.log"),
-    {
-      flags: "a",
-    }
-  );
+  let accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
+    flags: "a",
+  });
 
   // setup the logger
   app.use(morgan("combined", { stream: accessLogStream }));
@@ -87,7 +85,7 @@ app.use(
 );
 
 /* Enable req.body and req.files (form-data) */
-// app.use(fileUpload());
+app.use(fileUpload());
 
 /* Make public folder for static file */
 app.use(express.static("public"));

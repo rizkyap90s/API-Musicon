@@ -19,16 +19,13 @@ class Users {
 
   async updateDataUserById(req, res, next) {
     try {
-      if (req.file) {
-        req.body.photo = "/" + req.file.path.split("/").slice(1).join("/");
+      if (req.files) {
+        console.log(req.files.photo.nameCompress);
+        req.body.photo = "users/" + req.files.photo.nameCompress;
       }
-      const data = await User.findOneAndUpdate(
-        { _id: req.params.id },
-        req.body,
-        {
-          new: true,
-        }
-      ).select("-password -__v");
+      const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,
+      }).select("-password -__v");
       if (!data) {
         return next({ message: "User not found.", statusCode: 404 });
       }

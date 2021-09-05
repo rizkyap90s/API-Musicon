@@ -1,5 +1,14 @@
 const validator = require("validator");
 const { Playlist, Song } = require("../../models");
+
+// exports.addPlaylistValidator = async (req, res, next) => {
+//   try {
+//     req.body.dir = "playlists";
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 exports.getPlaylistByIdValidator = async (req, res, next) => {
   try {
     if (!validator.isMongoId(req.params.id)) {

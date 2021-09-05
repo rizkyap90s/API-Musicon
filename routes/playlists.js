@@ -1,9 +1,8 @@
 const express = require("express");
-const multer = require("multer");
+/* const multer = require("multer");
 const path = require("path");
 
 const storage = multer.diskStorage({
-  /* istanbul ignore next */
   destination: function (req, file, cb) {
     cb(null, "./public/images/playlists");
   },
@@ -11,7 +10,7 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
-const uploadImage = multer({ storage });
+const uploadImage = multer({ storage }); */
 
 const { isLoggedIn } = require("../middlewares/auth/local");
 const {
@@ -30,9 +29,10 @@ const {
   addAndRemoveSongValidator,
   deletePlaylistValidator,
 } = require("../middlewares/validators/playlists");
+const { uploadImage } = require("../middlewares/upload/imagePlaylist");
 const router = express.Router();
 
-router.post("/", isLoggedIn, uploadImage.single("playlistImage"), addNewPlaylist);
+router.post("/", isLoggedIn, uploadImage, addNewPlaylist);
 
 router.get("/", isLoggedIn, getAllPlaylists);
 router.get("/search", isLoggedIn, getPlaylistByTitle);
@@ -45,7 +45,7 @@ router.delete("/:playlistid/:songid", isLoggedIn, addAndRemoveSongValidator, rem
 router.post("/:playlistid/:songid", isLoggedIn, addSong);
 router.delete("/:playlistid/:songid", isLoggedIn, removeSong);
 
-router.put("/update/:id", isLoggedIn, uploadImage.single("playlistImage"), updatePlaylistById);
+router.put("/update/:id", isLoggedIn, uploadImage, updatePlaylistById);
 
 router.delete("/:id", isLoggedIn, deletePlaylistValidator, deletePlaylistById);
 

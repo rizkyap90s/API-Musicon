@@ -35,9 +35,8 @@ const userSchema = new mongoose.Schema(
     photo: {
       type: String,
       required: false,
-      // get: getImage,
-      default:
-        "https://www.personality-insights.com/wp-content/uploads/2017/12/default-profile-pic-e1513291410505.jpg",
+      get: getPhoto,
+      default: "users/dafault/dafault-image-users.jpeg",
     },
   },
   {
@@ -55,6 +54,12 @@ function setPassword(password) {
   return bcrypt.hashSync(password, 10);
 }
 
+function getPhoto(img) {
+  if (!img || img.includes("https") || img.includes("http")) {
+    return img;
+  }
+  return process.env.S3_URL + img;
+}
 userSchema.virtual("playlists", {
   ref: "Playlist",
   localField: "_id",

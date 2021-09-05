@@ -29,7 +29,8 @@ const playlistSchema = new mongoose.Schema(
     playlistImage: {
       type: String,
       required: true,
-      default: "https://i1.sndcdn.com/artworks-000560586507-q7vve7-t500x500.jpg",
+      default: "playlists/dafault/dafault-image-playlists.png",
+      get: getPlaylistImage,
     },
     playlistRating: {
       type: Number,
@@ -50,6 +51,12 @@ const playlistSchema = new mongoose.Schema(
   }
 );
 
+function getPlaylistImage(img) {
+  if (!img || img.includes("https") || img.includes("http")) {
+    return img;
+  }
+  return process.env.S3_URL + img;
+}
 // playlistSchema.statics.pushToUser = async function (author, _id) {
 //   try {
 //     const getUser = await this.model("User").findOne({ _id: author });
