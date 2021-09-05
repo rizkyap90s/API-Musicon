@@ -52,7 +52,11 @@ class Playlists {
 
   async getAllPlaylists(req, res, next) {
     try {
-      const data = await Playlist.find().populate("author");
+      const data = await Playlist.find().populate({
+        path: "author",
+        model: User,
+        select: "-password",
+      });
       res.status(200).json({ data });
     } catch (error) {
       /* istanbul ignore next */

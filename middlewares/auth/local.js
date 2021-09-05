@@ -131,6 +131,16 @@ passport.use(
           return done(null, false, { message: "User is not found!" });
         }
 
+        const isGoogle = await bcrypt.compare("google", data.password);
+        if (isGoogle) {
+          return done(null, false, { message: `Please login with google.` });
+        }
+
+        const isFacebook = await bcrypt.compare("facebook", data.password);
+        if (isFacebook) {
+          return done(null, false, { message: `Please login with facebook.` });
+        }
+
         const validate = await bcrypt.compare(req.body.password, data.password);
 
         if (!validate) {
@@ -162,6 +172,16 @@ passport.use(
           return done(null, false, { message: "User is not found!" });
         }
 
+        const isGoogle = await bcrypt.compare("google", data.password);
+        if (isGoogle) {
+          return done(null, false, { message: `Please login with google.` });
+        }
+
+        const isFacebook = await bcrypt.compare("facebook", data.password);
+        if (isFacebook) {
+          return done(null, false, { message: `Please login with facebook.` });
+        }
+
         const validate = await bcrypt.compare(req.body.password, data.password);
 
         if (!validate) {
@@ -176,3 +196,20 @@ passport.use(
     }
   )
 );
+
+exports.updateUserDatabase = async (req, res, next) => {
+  try {
+    let user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      user = await User.create(req.body);
+    }
+
+    req.user = user;
+
+    next();
+  } catch (error) {
+    /* istanbul ignore next */
+    next(error);
+  }
+};
