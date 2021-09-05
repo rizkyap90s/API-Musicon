@@ -20,7 +20,6 @@ class Users {
   async updateDataUserById(req, res, next) {
     try {
       if (req.files) {
-        console.log(req.files.photo.nameCompress);
         req.body.photo = "users/" + req.files.photo.nameCompress;
       }
       const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {

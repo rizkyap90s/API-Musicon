@@ -6,7 +6,6 @@ class Playlists {
   async addNewPlaylist(req, res, next) {
     try {
       if (req.files) {
-        console.log(req.files.playlistImage.nameCompress);
         req.body.playlistImage = "playlists/" + req.files.playlistImage.nameCompress;
       }
       req.body.author = ObjectId(req.user.user);
@@ -144,7 +143,6 @@ class Playlists {
   async updatePlaylistById(req, res, next) {
     try {
       if (req.files) {
-        console.log(req.files.playlistImage.nameCompress);
         req.body.playlistImage = "playlists/" + req.files.playlistImage.nameCompress;
       }
       req.body.author = ObjectId(req.user.user);
