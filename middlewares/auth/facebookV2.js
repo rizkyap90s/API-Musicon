@@ -18,7 +18,7 @@ exports.facebookLoginSanitizerValidator = async (req, res, next) => {
 
     req.body.username = req.body.email.split("@")[0];
     req.body.fullname = req.body.fullname;
-    req.body.photo = req.body.imageUrl;
+    req.body.photo = req.body.photo;
     req.body.email = req.body.email;
     req.body.password = "facebook";
 
