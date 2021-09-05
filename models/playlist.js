@@ -29,7 +29,7 @@ const playlistSchema = new mongoose.Schema(
     playlistImage: {
       type: String,
       required: true,
-      default: "playlists/dafault/dafault-image-playlists.png",
+      default: "playlists/default/musicon-default-image-playlist.jpeg",
       get: getPlaylistImage,
     },
     playlistRating: {
