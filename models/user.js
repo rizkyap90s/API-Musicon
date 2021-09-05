@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
       get: getPhoto,
-      default: "users/dafault/dafault-image-users.jpeg",
+      default: "users/default/default-image-users.jpeg",
     },
   },
   {
@@ -55,7 +55,7 @@ function setPassword(password) {
 }
 
 function getPhoto(img) {
-  if (!img || img.includes("https") || img.includes("http")) {
+  if (!img || img.includes("https") || img.includes("http") || img.includes("/images")) {
     return img;
   }
   return process.env.S3_URL + img;

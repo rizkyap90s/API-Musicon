@@ -52,7 +52,7 @@ const playlistSchema = new mongoose.Schema(
 );
 
 function getPlaylistImage(img) {
-  if (!img || img.includes("https") || img.includes("http")) {
+  if (!img || img.includes("https") || img.includes("http") || img.includes("/images")) {
     return img;
   }
   return process.env.S3_URL + img;
