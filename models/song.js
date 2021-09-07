@@ -49,10 +49,12 @@ const songSchema = new mongoose.Schema(
       createdAt: "createdAt",
       updatedAt: "updatedAt",
     },
-    toJSON: { getters: true },
+    toJSON: { getters: true, virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
+songSchema.virtual("isLiked");
 songSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
 module.exports = mongoose.model("Song", songSchema);

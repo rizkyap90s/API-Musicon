@@ -1,5 +1,5 @@
 // Adib's Code
-const { Song, Artist, Album } = require("../models");
+const { Song, Artist, Album, Like } = require("../models");
 const lyricsFinder = require("lyrics-finder");
 
 class SongCtrl {
@@ -27,23 +27,38 @@ class SongCtrl {
       const regex = new RegExp(req.query.title, "i");
 
       const songs = await Song.find({ songTitle: { $regex: regex } })
-        .populate({
-          path: "artistId",
-          model: Artist,
-          select: { _id: 1, name: 1, photo: 1 },
-        })
-        .populate({
-          path: "albumId",
-          model: Album,
-          select: { _id: 1, albumTitle: 1 },
-        })
-        .select("songTitle songImage songDuration artistId albumId tags audio")
+        .select("_id releaseDate")
         .skip(pageSize * (currentPage - 1))
         .limit(pageSize)
         .sort("-releaseDate");
 
       if (songs.length === 0) {
         return next({ message: "Song not found.", statusCode: 404 });
+      }
+
+      for (let i = 0; i < songs.length; i++) {
+        const like = await Like.findOne({
+          songId: songs[i]._id,
+          authorId: req.user.user,
+        });
+
+        let isLiked;
+        like ? (isLiked = true) : (isLiked = false);
+
+        const getSong = await Song.findById(songs[i]._id)
+          .populate({
+            path: "artistId",
+            model: Artist,
+            select: { _id: 1, name: 1, photo: 1 },
+          })
+          .populate({
+            path: "albumId",
+            model: Album,
+            select: { _id: 1, albumTitle: 1 },
+          });
+        getSong.isLiked = isLiked;
+
+        songs[i] = getSong;
       }
 
       res.status(200).json({ songs });

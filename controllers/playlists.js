@@ -1,4 +1,4 @@
-const { Playlist, User, Song, Artist, Album } = require("../models");
+const { Playlist, User, Song, Artist, Album, Like } = require("../models");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -6,7 +6,8 @@ class Playlists {
   async addNewPlaylist(req, res, next) {
     try {
       if (req.files) {
-        req.body.playlistImage = "playlists/" + req.files.playlistImage.nameCompress;
+        req.body.playlistImage =
+          "playlists/" + req.files.playlistImage.nameCompress;
       }
       req.body.author = ObjectId(req.user.user);
       await Playlist.create(req.body);
@@ -106,9 +107,26 @@ class Playlists {
           model: User,
           select: { _id: 1, username: 1, fullname: 1 },
         });
+
+      if (!data) {
+        return next({ message: "Playlist not found", statusCode: 404 });
+      }
+
       data.playlistDuration = data.songs
         .map((song) => song.songDuration)
         .reduce((total, index) => total + index, 0);
+
+      data.songs.forEach(async (song, index) => {
+        const like = await Like.findOne({
+          songId: song._id,
+          authorId: req.user.user,
+        });
+
+        like
+          ? (data.songs[index].isLiked = true)
+          : (data.songs[index].isLiked = false);
+      });
+      await data.save();
 
       res.status(200).json({ data });
     } catch (error) {
@@ -143,7 +161,8 @@ class Playlists {
   async updatePlaylistById(req, res, next) {
     try {
       if (req.files) {
-        req.body.playlistImage = "playlists/" + req.files.playlistImage.nameCompress;
+        req.body.playlistImage =
+          "playlists/" + req.files.playlistImage.nameCompress;
       }
       req.body.author = ObjectId(req.user.user);
       await Playlist.findOneAndUpdate({ _id: req.params.id }, req.body, {
@@ -159,7 +178,8 @@ class Playlists {
   async deletePlaylistById(req, res, next) {
     try {
       const getPlaylist = await Playlist.findOne({ _id: req.params.id });
-      if (!getPlaylist) return next({ statusCode: 404, message: "Playlist not found." });
+      if (!getPlaylist)
+        return next({ statusCode: 404, message: "Playlist not found." });
       if (getPlaylist.author != req.user.user) {
         return next({ statusCode: 403, message: "Access denied." });
       }
