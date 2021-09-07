@@ -22,9 +22,13 @@ class Users {
       if (req.files) {
         req.body.photo = "users/" + req.files.photo.nameCompress;
       }
-      const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
-        new: true,
-      }).select("-password -__v");
+      const data = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body,
+        {
+          new: true,
+        }
+      ).select("-password -__v");
       if (!data) {
         return next({ message: "User not found.", statusCode: 404 });
       }
@@ -151,6 +155,7 @@ class Users {
   async deleteCurrentUser(req, res, next) {
     try {
       await User.findByIdAndDelete(req.user.user);
+      await Playlist.deleteMany({ author: req.user.user });
       res.status(200).json({ message: "User is deleted." });
     } catch (error) {
       next(error);
