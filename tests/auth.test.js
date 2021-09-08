@@ -16,7 +16,7 @@ beforeAll(async () => {
 
 describe("No Endpoint detected", () => {
   it("No", async () => {
-    const res = await req(app).get("");
+    const res = await req(app).get("/noendpoint");
     expect(res.statusCode).toEqual(404);
     expect(res.body).toBeInstanceOf(Object);
   });

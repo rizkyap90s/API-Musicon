@@ -1,13 +1,14 @@
 const req = require("supertest");
 const app = require("../app");
 const mongoose = require("mongoose");
-const { User, Playlist, Artist, Album, Song } = require("../models");
+const { User, Playlist, Artist, Album, Song, Like } = require("../models");
 const jwt = require("jsonwebtoken");
 const faker = require("faker");
 let createUser;
 let userToken;
 let createPlaylist;
 let createSong;
+let createLike;
 
 beforeAll(async () => {
   createUser = await User.create({
@@ -44,6 +45,14 @@ beforeAll(async () => {
   createPlaylist.songs.push(createSong._id);
   await createPlaylist.save();
 
+  createLike = await Like.create({
+    like: true,
+    authorId: createUser._id,
+    songId: createSong._id,
+  });
+
+  const data = await Like.find({ authorId: createUser._id, like: true });
+  console.log(data);
   userToken = jwt.sign({ user: createUser._id }, process.env.JWT_SECRET);
 });
 
@@ -183,6 +192,38 @@ describe("Get User Top artist", () => {
     const res = await req(app)
       .get(`/users/${createUser._id}/topartists`)
       .query({ title: "a", limit: 3 });
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
+  });
+});
+
+describe("get liked songs", () => {
+  it("get liked song success", async () => {
+    const res = await req(app)
+      .get(`/users/${createUser._id}/likedsongs`)
+      .set("Authorization", `Bearer ${userToken}`);
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("songs");
+  });
+  it("get liked songs not authorize", async () => {
+    const res = await req(app).get(`/users/${createUser._id}/likedsongs`);
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("errors");
+  });
+});
+
+describe("Delete current user", () => {
+  it("Delete current user success", async () => {
+    const res = await req(app).delete(`/auth/deleteme`).set("Authorization", `Bearer ${userToken}`);
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body).toHaveProperty("message");
+  });
+  it("Delete current user not authorize", async () => {
+    const res = await req(app).delete(`/auth/deleteme`);
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
     expect(res.body).toHaveProperty("errors");

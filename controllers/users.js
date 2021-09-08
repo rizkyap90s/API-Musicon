@@ -22,13 +22,9 @@ class Users {
       if (req.files) {
         req.body.photo = "users/" + req.files.photo.nameCompress;
       }
-      const data = await User.findOneAndUpdate(
-        { _id: req.params.id },
-        req.body,
-        {
-          new: true,
-        }
-      ).select("-password -__v");
+      const data = await User.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,
+      }).select("-password -__v");
       if (!data) {
         return next({ message: "User not found.", statusCode: 404 });
       }
