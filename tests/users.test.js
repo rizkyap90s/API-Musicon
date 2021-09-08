@@ -50,9 +50,6 @@ beforeAll(async () => {
     authorId: createUser._id,
     songId: createSong._id,
   });
-
-  const data = await Like.find({ authorId: createUser._id, like: true });
-  console.log(data);
   userToken = jwt.sign({ user: createUser._id }, process.env.JWT_SECRET);
 });
 
@@ -205,7 +202,7 @@ describe("get liked songs", () => {
       .set("Authorization", `Bearer ${userToken}`);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Object);
-    expect(res.body).toHaveProperty("songs");
+    expect(res.body).toHaveProperty("data");
   });
   it("get liked songs not authorize", async () => {
     const res = await req(app).get(`/users/${createUser._id}/likedsongs`);
