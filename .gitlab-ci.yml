@@ -1,36 +1,36 @@
 # # We have 2 stage Test and Deploy
 stages:
-  # - test
+  - test
   - deploy
 
-# # Test job
-# test:
-#   # Docker image
-#   image: node:14-alpine
-#   # Attach Test job to Test stage
-#   stage: test
-#   # Config to use GitLab Shared Runner with Executor Docker
-#   tags:
-#     - docker
-#   script:
-#     - echo "MONGO_URI"=$MONGO_URI_TEST > .env.test
-#     - echo "JWT_SECRET"=$JWT_SECRET >> .env.test
-#     - echo "GOOGLE_CLIENT_ID"=$GOOGLE_CLIENT_ID >> .env.test
-#     - echo "GOOGLE_CLIENT_SECRET"=$GOOGLE_CLIENT_SECRET >> .env.test
-#     - echo "GOOGLE_CALLBACK_URL"=$GOOGLE_CALLBACK_URL >> .env.test
-#     - echo "FACEBOOK_CLIENT_ID"=$FACEBOOK_CLIENT_ID >> .env.test
-#     - echo "FACEBOOK_CLIENT_SECRET"=$FACEBOOK_CLIENT_SECRET >> .env.test
-#     - echo "FACEBOOK_CALLBACK_URL"=$FACEBOOK_CALLBACK_URL >> .env.test
-# - echo "S3_ACCESS_KEY"=$S3_ACCESS_KEY >> .env.test
-# - echo "S3_BUCKET"=$S3_BUCKET >> .env.test
-# - echo "S3_SECRET_KEY"=$S3_SECRET_KEY >> .env.test
-# - echo "S3_URL"=$S3_URL >> .env.test
+# Test job
+test:
+  # Docker image
+  image: node:14-alpine
+  # Attach Test job to Test stage
+  stage: test
+  # Config to use GitLab Shared Runner with Executor Docker
+  tags:
+    - docker
+  script:
+    - echo "MONGO_URI"=$MONGO_URI_TEST > .env.test
+    - echo "JWT_SECRET"=$JWT_SECRET >> .env.test
+    - echo "GOOGLE_CLIENT_ID"=$GOOGLE_CLIENT_ID >> .env.test
+    - echo "GOOGLE_CLIENT_SECRET"=$GOOGLE_CLIENT_SECRET >> .env.test
+    - echo "GOOGLE_CALLBACK_URL"=$GOOGLE_CALLBACK_URL >> .env.test
+    - echo "FACEBOOK_CLIENT_ID"=$FACEBOOK_CLIENT_ID >> .env.test
+    - echo "FACEBOOK_CLIENT_SECRET"=$FACEBOOK_CLIENT_SECRET >> .env.test
+    - echo "FACEBOOK_CALLBACK_URL"=$FACEBOOK_CALLBACK_URL >> .env.test
+    - echo "S3_ACCESS_KEY"=$S3_ACCESS_KEY >> .env.test
+    - echo "S3_BUCKET"=$S3_BUCKET >> .env.test
+    - echo "S3_SECRET_KEY"=$S3_SECRET_KEY >> .env.test
+    - echo "S3_URL"=$S3_URL >> .env.test
 
-#     - npm i
-#     - npm run test
-#   # Defines the names of branches and tags the job runs for
-#   only:
-#     - production
+    - npm i
+    - npm run test
+  # Defines the names of branches and tags the job runs for
+  only:
+    - production
 
 # Deploy job
 deploy:
