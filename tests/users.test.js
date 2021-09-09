@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const { User, Playlist, Artist, Album, Song, Like } = require("../models");
 const jwt = require("jsonwebtoken");
 const faker = require("faker");
+const fs = require("fs");
 let createUser;
 let userToken;
 let createPlaylist;
@@ -119,6 +120,18 @@ describe("Update User Data By Id", () => {
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
     expect(res.body).toHaveProperty("errors");
+  });
+});
+describe("Upload endpoint", () => {
+  it("Successfully uploads jpg image", (done) => {
+    const res = req(app)
+      .put(`/users/updatedata/${createUser._id}`)
+      .set("Authorization", `Bearer ${userToken}`)
+      .set("content-type", "application/octet-stream");
+
+    const imgStream = fs.createReadStream(`${__dirname}/testUserImage.jpg`);
+    imgStream.on("end", () => res.end(done));
+    imgStream.pipe(res, { end: false });
   });
 });
 

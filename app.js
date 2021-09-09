@@ -102,6 +102,7 @@ app.use("/users", users);
 app.use("/albums", albums);
 
 app.get("/", (req, res) => {
+  /* istanbul ignore next */
   res.send("Hello");
 });
 
